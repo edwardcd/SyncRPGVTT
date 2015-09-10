@@ -1,16 +1,17 @@
+The SyncRPG VTT, Powered by MapTool
+=======
+Simply put, SyncRPG makes it easy to play your favorite tabletop roleplaying games (RPGs) with your friends over the internet and helps you keep records of the experience.
+
+SyncRPG is a set of online tools, rule sets, and art assets aimed at facilitating the creation, sharing, and playing of traditional tabletop roleplaying games over the Internet. It is used to help run games efficiently, allows Game Masters (GMs) to share their encounters and non-player characters (NPCs) with each other, and enables players to keep historical records of their characters online—forever!
+
+SyncRPG consists of a MapTool-based virtual tabletop (VTT) application combined with an online repository of art, maps, and NPC (both monster and class-leveled) statistics that are completely free for everyone to use, easily and instantly. Think of it as coming to our house to play a game: we have maps and a box of miniatures that everyone may use to start a game, and rules sheets for different monsters and characters—indexed and ready to go!
+
+
+Website: https://www.syncrpg.com/
+Forums:  https://www.syncrpg.com/forums/
+
 MapTool
 =======
-Welcome to the MapTool 1.4 repository. The old version (1.3) still resides on SourceForge (http://sourceforge.net/p/rptools/svn/HEAD/tree/) but should only be updated with major bug fixes.
-
-So what is MapTool? 
-
-MapTool is much more than just a mapping program. Included are not only powerful tools for the creation of detailed maps, but also a chat function, detailed token management (allowing you to track properties of the units placed on the map and display health and status information), and an initiative tracker. Functions not being used can be hidden out of sight. These features enable your computer screen to function as a virtual table top, filling the role of battlemats and dry-erase markers and providing for infinitely scrollable maps and the ability to use a large-screen TV or video projector.  It is "game system agnostic", meaning that while MapTool has special support for some game systems (like hexes for GURPS or square templates for D&D 4E) there is no requirement for you to use these features.
-
-The best part is all this isn't limited to a single PC. You can utilize the integrated server function to connect to players wherever there's an Internet connection. Miss your buddy in Singapore? Not a problem. Roll up that character, and then your sleeves.
-
-And we don't stop there! Not content with just emulating the tabletop, we seek to improve upon the tabletop experience. This, truly, is where MapTool shines. A set of "topology" and vision features enable the GM to limit the view of his players, revealing the map as they explore it. Walls and other objects can prevent players from seeing what lies behind them. Darkness can be made to fall, blinding players who lack a light. Lights can be set on objects or on tokens that illuminate however much of the map you wish. If the GM wishes, s/he can limit the view of players to what their specific token sees, adding a whole new level to the experience of splitting up the party.  Woe be to the character who can't see around the corner of a wall but steps out into the view of the enemy!
-
-
 This version of MapTool requires Java 1.7+
 
 Website: http://rptools.net/ <br>
