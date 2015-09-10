@@ -75,7 +75,7 @@ public class Token extends BaseModel {
 	private GUID exposedAreaGUID;
 
 	public enum TokenShape {
-		TOP_DOWN("Top down"), CIRCLE("Circle"), SQUARE("Square");
+		TOP_DOWN("Top down"), CIRCLE("Circle"), SQUARE("Square"), FIGURE("Figure");
 
 		private String displayName;
 
@@ -156,6 +156,7 @@ public class Token extends BaseModel {
 
 	private boolean isFlippedX;
 	private boolean isFlippedY;
+	private Boolean isFlippedIso;
 
 	private MD5Key charsheetImage;
 	private MD5Key portraitImage;
@@ -163,6 +164,8 @@ public class Token extends BaseModel {
 	private List<AttachedLightSource> lightSourceList;
 	private String sightType;
 	private boolean hasSight;
+	private Boolean hasImageTable;
+	private String imageTableName;
 
 	private String label;
 
@@ -242,6 +245,7 @@ public class Token extends BaseModel {
 
 		isFlippedX = token.isFlippedX;
 		isFlippedY = token.isFlippedY;
+		isFlippedIso = token.isFlippedIso;
 
 		layer = token.layer;
 
@@ -255,6 +259,8 @@ public class Token extends BaseModel {
 		sightType = token.sightType;
 		hasSight = token.hasSight;
 		propertyType = token.propertyType;
+		hasImageTable = token.hasImageTable;
+		imageTableName = token.imageTableName;
 
 		ownerType = token.ownerType;
 		if (token.ownerList != null) {
@@ -341,6 +347,17 @@ public class Token extends BaseModel {
 
 	public void setHasSight(boolean hasSight) {
 		this.hasSight = hasSight;
+	}
+	
+	public void setHasImageTable(boolean hasImageTable) {
+		if (hasImageTable)
+			this.hasImageTable = true;
+		else
+			this.hasImageTable = null;
+	}
+	
+	public void setImageTableName(String imageTableName) {
+		this.imageTableName = imageTableName;
 	}
 
 	public void setWidth(int width) {
@@ -504,6 +521,16 @@ public class Token extends BaseModel {
 
 	public boolean getHasSight() {
 		return hasSight;
+	}
+	
+	public boolean getHasImageTable() {
+		if (hasImageTable!=null)
+			return hasImageTable;
+		return false;
+	}
+	
+	public String getImageTableName() {
+		return imageTableName;
 	}
 
 	public void addLightSource(LightSource source, Direction direction) {
@@ -892,6 +919,11 @@ public class Token extends BaseModel {
 		Grid grid = zone.getGrid();
 		TokenFootprint footprint = getFootprint(grid);
 		Rectangle footprintBounds = footprint.getBounds(grid, grid.convert(new ZonePoint(getX(), getY())));
+		//if (getShape() == TokenShape.FIGURE) {
+		//	double th = this.height * Double.valueOf(footprintBounds.width) / this.width;
+		//	double ho = footprintBounds.height - th;
+		//	footprintBounds = new Rectangle(footprintBounds.x, footprintBounds.y + (int)ho, footprintBounds.width, (int)th);
+		//}
 
 		double w = footprintBounds.width;
 		double h = footprintBounds.height;
@@ -1294,6 +1326,19 @@ public class Token extends BaseModel {
 
 	public void setFlippedX(boolean isFlippedX) {
 		this.isFlippedX = isFlippedX;
+	}
+
+	public boolean isFlippedIso() {
+		if (isFlippedIso!=null)
+			return isFlippedIso;
+		return false;
+	}
+
+	public void setFlippedIso(boolean isFlippedIso) {
+		if (isFlippedIso)
+			this.isFlippedIso = true;
+		else 
+			this.isFlippedIso = null;
 	}
 
 	public Color getVisionOverlayColor() {
