@@ -83,7 +83,12 @@ public interface ServerCommand {
 		enforceNotification, // Override toggle button to show typing notifications
 		exposePCArea,
 		setBoard,
-		updateExposedAreaMeta
+		updateExposedAreaMeta,
+		// SyncRPG Additions
+		updateGenericCampaignMacros,
+		updateSkillsCampaignMacros,
+		updateOffenseCampaignMacros,
+		updateDefenseCampaignMacros
 	};
 
 	public void bootPlayer(String player);
@@ -171,6 +176,14 @@ public interface ServerCommand {
 	public void setVisionType(GUID zoneGUID, VisionType visionType);
 
 	public void updateCampaignMacros(List<MacroButtonProperties> properties);
+
+	public void updateGenericCampaignMacros(List<MacroButtonProperties> properties);
+
+	public void updateSkillsCampaignMacros(List<MacroButtonProperties> properties);
+
+	public void updateOffenseCampaignMacros(List<MacroButtonProperties> properties);
+
+	public void updateDefenseCampaignMacros(List<MacroButtonProperties> properties);
 
 	public void setBoard(GUID zoneGUID, MD5Key mapAsset, int X, int Y);
 

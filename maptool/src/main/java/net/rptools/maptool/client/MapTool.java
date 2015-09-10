@@ -80,7 +80,7 @@ public class MapTool {
 	/**
 	 * The splash image that comes up during application initialization.
 	 */
-	private static final String SPLASH_IMAGE = "net/rptools/maptool/client/image/maptool_splash.png";
+	private static final String SPLASH_IMAGE = "net/rptools/maptool/client/image/syncrpg_splash.png";
 
 	/**
 	 * Contains just the version number of MapTool, such as <code>1.3.b49</code>
@@ -844,6 +844,10 @@ public class MapTool {
 
 		AssetManager.updateRepositoryList();
 		MapTool.getFrame().getCampaignPanel().reset();
+		MapTool.getFrame().getGenericPanel().reset();
+		MapTool.getFrame().getSkillsPanel().reset();
+		MapTool.getFrame().getOffensePanel().reset();
+		MapTool.getFrame().getDefensePanel().reset();
 		UserDefinedMacroFunctions.getInstance().loadCampaignLibFunctions();
 	}
 
@@ -1093,7 +1097,7 @@ public class MapTool {
 				defaults.put("OptionPaneUI", "com.jidesoft.plaf.basic.BasicJideOptionPaneUI");
 
 				defaults.put("OptionPane.showBanner", Boolean.TRUE); // show banner or not. default is true
-				defaults.put("OptionPane.bannerIcon", new ImageIcon(MapTool.class.getClassLoader().getResource("net/rptools/maptool/client/image/maptool_icon.png")));
+				defaults.put("OptionPane.bannerIcon", new ImageIcon(MapTool.class.getClassLoader().getResource("net/rptools/maptool/client/image/syncrpg_icon.png")));
 				defaults.put("OptionPane.bannerFontSize", 13);
 				defaults.put("OptionPane.bannerFontStyle", Font.BOLD);
 				defaults.put("OptionPane.bannerMaxCharsPerLine", 60);
@@ -1121,7 +1125,7 @@ public class MapTool {
 			// title (ie. name of the application) has to be set before the GUI is initialized (by
 			// creating a frame, loading a splash screen, etc).  So we do it here.
 			System.setProperty("apple.laf.useScreenMenuBar", "true");
-			System.setProperty("com.apple.mrj.application.apple.menu.about.name", "About MapTool...");
+			System.setProperty("com.apple.mrj.application.apple.menu.about.name", "About the SyncTPG VTT...");
 			System.setProperty("apple.awt.brushMetalLook", "true");
 		}
 		// Before anything else, create a place to store all the data

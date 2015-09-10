@@ -34,6 +34,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.ToolTipManager;
 
 import net.rptools.lib.swing.SwingUtil;
+import net.rptools.maptool.client.AppConstants;
 import net.rptools.maptool.client.MapTool;
 import net.rptools.maptool.client.MapToolUtil;
 import net.rptools.maptool.client.ui.MacroButtonHotKeyManager;
@@ -65,6 +66,7 @@ public class MacroButton extends JButton implements MouseListener {
 	private DragSourceListener dsListener;
 
 	private static final Pattern MACRO_LABEL = Pattern.compile("^(/\\w+\\s+)(.*)$");
+	private static final Pattern MACRO_LABEL_IMAGE = Pattern.compile("\\[\\[([^\\]]+)\\]\\]");
 
 	public MacroButton(MacroButtonProperties properties, ButtonGroup buttonGroup) {
 		this(properties, buttonGroup, null);
@@ -142,16 +144,19 @@ public class MacroButton extends JButton implements MouseListener {
 		else
 			buttonLabel = label;
 
+		String skin = "default";
+		String size = "48";
+
+		m = MACRO_LABEL_IMAGE.matcher(label);
+		if (m.matches()) {
+			buttonLabel = "<img src=\"file:///" + System.getProperty("user.dir") + "/images/macroIcons/" + skin + "/" + size + "/" + m.group(1) + ".png\">";
+		}
+
 		String div = "<div style='font-size: " + properties.getFontSize() + "; text-align: center'>";
 		String formatButtonLabel = "<p style='color: " + properties.getFontColorAsHtml() + "; " + getMinWidth() + getMaxWidth() + "'>" + buttonLabel;
 
-		// if there is no hotkey (HOTKEY[0]) then no need to add hint
-		String hotKey = properties.getHotKey();
-		String result = null;
-		if (hotKey.equals(MacroButtonHotKeyManager.HOTKEYS[0]))
-			result = "<html>" + div + formatButtonLabel;
-		else
-			result = "<html>" + div + formatButtonLabel + "<font style='font-size:0.8em'> (" + hotKey + ")";
+		String result = "<html>" + div + formatButtonLabel;
+
 		return result;
 	}
 
@@ -197,7 +202,11 @@ public class MacroButton extends JButton implements MouseListener {
 		} else if (SwingUtilities.isRightMouseButton(event)) {
 			if (getPanelClass().equals("GlobalPanel")) {
 				new MacroButtonPopupMenu(this, panelClass, false).show(this, event.getX(), event.getY());
-			} else if (getPanelClass().equals("CampaignPanel")) {
+			} else if (getPanelClass().equals("CampaignPanel")
+							|| getPanelClass().equals("GenericPanel")
+							|| getPanelClass().equals("SkillsPanel")
+							|| getPanelClass().equals("OffensePanel")
+							|| getPanelClass().equals("DefensePanel")) {
 				if (MapTool.getPlayer().isGM()) {
 					new MacroButtonPopupMenu(this, panelClass, false).show(this, event.getX(), event.getY());
 				} else {
@@ -312,4 +321,7 @@ public class MacroButton extends JButton implements MouseListener {
 		return tt.length() == 0 ? null : tt;
 	}
 
+	public static boolean isMacroButtonFile(String filename) {
+		return filename != null && (filename.toLowerCase().endsWith(AppConstants.MACRO_FILE_EXTENSION) || filename.toLowerCase().endsWith(AppConstants.MACRO_FILE_EXTENSION + AppConstants.PHP_FILE_EXTENSION));
+	}
 }

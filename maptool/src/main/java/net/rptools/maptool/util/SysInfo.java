@@ -347,9 +347,9 @@ public class SysInfo {
 		// frame.setJMenuBar(demo.createMenuBar());
 		frame.setContentPane(demo.createContentPane());
 		try {
-			Image img = ImageUtil.getImage("net/rptools/maptool/client/image/maptool_icon.png");
+			Image img = ImageUtil.getImage("net/rptools/maptool/client/image/syncrpg_icon.png");
 			frame.setIconImage(img);
-//			URL url = MapTool.class.getClassLoader().getResource("net/rptools/maptool/client/image/maptool_icon.png");
+//			URL url = MapTool.class.getClassLoader().getResource("net/rptools/maptool/client/image/syncrpg_icon.png");
 //			Toolkit tk = Toolkit.getDefaultToolkit();
 //			if (url != null) {
 //				Image img = tk.createImage(url);

@@ -14,6 +14,7 @@ package net.rptools.maptool.client.functions;
 import java.util.LinkedList;
 import java.util.List;
 
+import net.rptools.maptool.client.AppConstants;
 import net.rptools.maptool.client.MapTool;
 import net.rptools.maptool.client.ui.zone.ZoneRenderer;
 import net.rptools.maptool.language.I18N;
@@ -67,5 +68,9 @@ public class MapFunctions extends AbstractFunction {
 				return StringFunctions.getInstance().join(mapNames, delim);
 			}
 		}
+	}
+
+	public static boolean isMapFile(String filename) {
+		return filename != null && (filename.toLowerCase().endsWith(AppConstants.MAP_FILE_EXTENSION) || filename.toLowerCase().endsWith(AppConstants.MAP_FILE_EXTENSION + AppConstants.PHP_FILE_EXTENSION));
 	}
 }

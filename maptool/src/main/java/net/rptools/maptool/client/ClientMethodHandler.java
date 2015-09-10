@@ -546,6 +546,26 @@ public class ClientMethodHandler extends AbstractMethodHandler {
 					return;
 					// moved this down into the event queue section so that the threading works as expected
 
+				case updateGenericCampaignMacros:
+					MapTool.getCampaign().setGenericMacroButtonPropertiesArray(new ArrayList<MacroButtonProperties>((ArrayList<MacroButtonProperties>) parameters[0]));
+					MapTool.getFrame().getGenericPanel().reset();
+					return;
+
+				case updateSkillsCampaignMacros:
+					MapTool.getCampaign().setSkillsMacroButtonPropertiesArray(new ArrayList<MacroButtonProperties>((ArrayList<MacroButtonProperties>) parameters[0]));
+					MapTool.getFrame().getSkillsPanel().reset();
+					return;
+
+				case updateOffenseCampaignMacros:
+					MapTool.getCampaign().setOffenseMacroButtonPropertiesArray(new ArrayList<MacroButtonProperties>((ArrayList<MacroButtonProperties>) parameters[0]));
+					MapTool.getFrame().getOffensePanel().reset();
+					return;
+
+				case updateDefenseCampaignMacros:
+					MapTool.getCampaign().setDefenseMacroButtonPropertiesArray(new ArrayList<MacroButtonProperties>((ArrayList<MacroButtonProperties>) parameters[0]));
+					MapTool.getFrame().getDefensePanel().reset();
+					return;
+
 				case setLiveTypingLabel:
 					if ((Boolean) parameters[1]) {
 						// add a typer

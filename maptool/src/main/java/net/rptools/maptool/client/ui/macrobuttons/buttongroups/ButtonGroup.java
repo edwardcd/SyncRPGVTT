@@ -24,7 +24,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import net.rptools.maptool.client.AppConstants;
 import net.rptools.maptool.client.MapTool;
+import net.rptools.maptool.client.TransferableHelper;
 import net.rptools.maptool.client.ui.MacroButtonHotKeyManager;
 import net.rptools.maptool.client.ui.macrobuttons.buttons.MacroButton;
 import net.rptools.maptool.client.ui.macrobuttons.buttons.TransferData;
@@ -67,7 +69,13 @@ public class ButtonGroup extends AbstractButtonGroup {
 		} else {
 			Collections.sort(propertiesList);
 			for (MacroButtonProperties prop : propertiesList) {
-				if (panelClass.equals("GlobalPanel") || panelClass.equals("CampaignPanel")) {
+				if (panelClass.equals("GlobalPanel")
+				   || panelClass.equals("CampaignPanel")
+				   || panelClass.equals("GenericPanel")
+				   || panelClass.equals("SkillsPanel")
+				   || panelClass.equals("OffensePanel")
+				   || panelClass.equals("DefensePanel")
+					) {
 					add(new MacroButton(prop, this));
 				} else if (panelClass.equals("ImpersonatePanel") || panelClass.equals("SelectionPanel")) {
 					add(new MacroButton(prop, this, getToken()));
@@ -79,81 +87,104 @@ public class ButtonGroup extends AbstractButtonGroup {
 		revalidate();
 		repaint();
 	}
-	
+
 	public void drop(DropTargetDropEvent event) {
-		//System.out.println("BG: drop!");
 		String panelClass = getPanelClass();
 
 		try {
 			Transferable t = event.getTransferable();
-			TransferData data = (TransferData) t.getTransferData(TransferableMacroButton.macroButtonFlavor);
-			if (data == null) {
-				return;
-			}
-			// create a temporary MacroButtonProperties object to hold the transferred data until we figure out where it goes
-			MacroButtonProperties tempProperties = new MacroButtonProperties(
-				data.index,
-				data.colorKey,
-				MacroButtonHotKeyManager.HOTKEYS[0], // don't reuse the hot key
-				data.command,
-				data.label,
-				data.group,
-				data.sortby,
-				data.autoExecute,
-				data.includeLabel,
-				data.applyToTokens,
-				data.fontColorKey,
-				data.fontSize,
-				data.minWidth,
-				data.maxWidth, 
-				data.toolTip);
+			TransferData data;
 
-			if (panelClass.equals("GlobalPanel")) {
-				event.acceptDrop(event.getDropAction());
-				tempProperties.setGroup(getMacroGroup());  // assign the group you are dropping it into, rather than the original
-				if (!tempProperties.isDuplicateMacro("GlobalPanel", null)){
-					new MacroButtonProperties(panelClass, MacroButtonPrefs.getNextIndex(), tempProperties);
+			List<MacroButtonProperties> macroButtons = new ArrayList<MacroButtonProperties>();
+
+			event.acceptDrop(event.getDropAction());
+
+			if(event.isLocalTransfer()) {
+				data = (TransferData) t.getTransferData(TransferableMacroButton.macroButtonFlavor);
+
+				if (data == null) {
+					return;
 				}
-			} else if(panelClass.equals("CampaignPanel")) {
-				event.acceptDrop(event.getDropAction());
-				tempProperties.setGroup(getMacroGroup());  // assign the group you are dropping it into, rather than the original
-				if (!tempProperties.isDuplicateMacro("CampaignPanel", null)){
-					new MacroButtonProperties(panelClass, MapTool.getCampaign().getMacroButtonNextIndex(), tempProperties);
+				// create a temporary MacroButtonProperties object to hold the transferred data until we figure out where it goes
+				macroButtons.add(new MacroButtonProperties(
+								data.index,
+								data.colorKey,
+								MacroButtonHotKeyManager.HOTKEYS[0], // don't reuse the hot key
+								data.command,
+								data.label,
+								"",
+								data.sortby,
+								data.autoExecute,
+								data.includeLabel,
+								data.applyToTokens,
+								data.fontColorKey,
+								data.fontSize,
+								data.minWidth,
+								data.maxWidth,
+								data.toolTip));
+			}
+			else {
+				List<Object> assets = TransferableHelper.getAsset(t);
+				if (assets != null) {
+					for (Object working : assets) {
+						macroButtons.add((MacroButtonProperties) working);
+					}
+				} else {
+					MapTool.showWarning("TransferableHelper.warning.badObject"); //$NON-NLS-1$
 				}
-			} else if(panelClass.equals("SelectionPanel")) {
-				if(getArea() != null) {
-					if(getArea().getGroupLabel().equals(I18N.getText("component.areaGroup.macro.commonMacros"))) {
-						event.acceptDrop(event.getDropAction());
-						tempProperties.setGroup(getMacroGroup());  // assign the group you are dropping it into, rather than the original
-						for(Token nextToken : MapTool.getFrame().getCurrentZoneRenderer().getSelectedTokensList()) {
-							if(!tempProperties.isDuplicateMacro("Token", nextToken)) {
-								new MacroButtonProperties(nextToken, nextToken.getMacroNextIndex(), tempProperties);
+			}
+
+			if(!macroButtons.isEmpty()) {
+				for(MacroButtonProperties macro : macroButtons) {
+					if (panelClass.equals("GlobalPanel")
+						|| panelClass.equals("CampaignPanel")
+						|| panelClass.equals("GenericPanel")
+						|| panelClass.equals("SkillsPanel")
+						|| panelClass.equals("OffensePanel")
+						|| panelClass.equals("DefensePanel")) {
+						// jmoskie: TODO: check the group. if it's set and getMacroGroup isn't, then preserve it.
+						if(macro.getGroup().isEmpty() && !getMacroGroup().isEmpty()) {
+							macro.setGroup(getMacroGroup());
+						}
+
+						if (!macro.isDuplicateMacro(panelClass, null)){
+							new MacroButtonProperties(panelClass, MacroButtonPrefs.getNextIndex(), macro);
+						}
+					} else if(panelClass.equals("SelectionPanel")) {
+						if(getArea() != null) {
+							if(getArea().getGroupLabel().equals(I18N.getText("component.areaGroup.macro.commonMacros"))) {
+								macro.setGroup(getMacroGroup());  // assign the group you are dropping it into, rather than the original
+								for(Token nextToken : MapTool.getFrame().getCurrentZoneRenderer().getSelectedTokensList()) {
+									if(!macro.isDuplicateMacro("Token", nextToken)) {
+										new MacroButtonProperties(nextToken, nextToken.getMacroNextIndex(), macro);
+									}
+								}
+							} else if (getToken() != null){
+								// this is a token group, copy macro to token
+								macro.setGroup(getMacroGroup());  // assign the group you are dropping it into, rather than the original
+								Token token = getToken();
+								if (!macro.isDuplicateMacro("Token", token)) {
+									new MacroButtonProperties(token, token.getMacroNextIndex(), macro);
+								}
 							}
 						}
-					} else if (getToken() != null){
+					} else if (getToken() != null) {
 						// this is a token group, copy macro to token
-						event.acceptDrop(event.getDropAction());
-						tempProperties.setGroup(getMacroGroup());  // assign the group you are dropping it into, rather than the original
+						macro.setGroup(getMacroGroup());  // assign the group you are dropping it into, rather than the original
 						Token token = getToken();
-						if (!tempProperties.isDuplicateMacro("Token", token)) {
-							new MacroButtonProperties(token, token.getMacroNextIndex(), tempProperties);
+						if (!macro.isDuplicateMacro("Token", token)) {
+							new MacroButtonProperties(token, token.getMacroNextIndex(), macro);
 						}
+					} else {
+						// if this happens, it's a bug
+						throw new Exception(I18N.getText("msg.error.macro.buttonGroupDnDFail"));
 					}
 				}
-			} else if (getToken() != null) {
-				// this is a token group, copy macro to token
-				event.acceptDrop(event.getDropAction());
-				tempProperties.setGroup(getMacroGroup());  // assign the group you are dropping it into, rather than the original
-				Token token = getToken();
-				if (!tempProperties.isDuplicateMacro("Token", token)) {
-					new MacroButtonProperties(token, token.getMacroNextIndex(), tempProperties);
-				}
-			} else {
-				// if this happens, it's a bug
-				throw new Exception(I18N.getText("msg.error.macro.buttonGroupDnDFail"));
+				event.dropComplete(true);
 			}
-			//System.out.println("drop accepted");
-			event.dropComplete(true);
+			else {
+				event.dropComplete(false);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			event.dropComplete(false);
@@ -237,5 +268,9 @@ public class ButtonGroup extends AbstractButtonGroup {
 			}
 		}
 		return myButtons;
+	}
+
+	public static boolean isMacroButtonGroupFile(String filename) {
+		return filename != null && (filename.toLowerCase().endsWith(AppConstants.MACROSET_FILE_EXTENSION) || filename.toLowerCase().endsWith(AppConstants.MACROSET_FILE_EXTENSION + AppConstants.PHP_FILE_EXTENSION));
 	}
 }

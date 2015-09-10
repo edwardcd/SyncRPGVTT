@@ -204,6 +204,18 @@ public class ServerMethodHandler extends AbstractMethodHandler implements Server
 			case updateCampaignMacros:
 				updateCampaignMacros((List<MacroButtonProperties>) context.get(0));
 				break;
+			case updateGenericCampaignMacros:
+				updateGenericCampaignMacros((List<MacroButtonProperties>) context.get(0));
+				break;
+			case updateSkillsCampaignMacros:
+				updateSkillsCampaignMacros((List<MacroButtonProperties>) context.get(0));
+				break;
+			case updateOffenseCampaignMacros:
+				updateOffenseCampaignMacros((List<MacroButtonProperties>) context.get(0));
+				break;
+			case updateDefenseCampaignMacros:
+				updateDefenseCampaignMacros((List<MacroButtonProperties>) context.get(0));
+				break;
 			case setTokenLocation:
 				setTokenLocation(context.getGUID(0), context.getGUID(1), context.getInt(2), context.getInt(3));
 				break;
@@ -259,6 +271,26 @@ public class ServerMethodHandler extends AbstractMethodHandler implements Server
 
 	public void updateCampaign(CampaignProperties properties) {
 		server.getCampaign().replaceCampaignProperties(properties);
+		forwardToClients();
+	}
+
+	public void updateGenericCampaignMacros(List<MacroButtonProperties> properties) {
+		MapTool.getCampaign().setGenericMacroButtonPropertiesArray(new ArrayList<MacroButtonProperties>(properties));
+		forwardToClients();
+	}
+
+	public void updateSkillsCampaignMacros(List<MacroButtonProperties> properties) {
+		MapTool.getCampaign().setSkillsMacroButtonPropertiesArray(new ArrayList<MacroButtonProperties>(properties));
+		forwardToClients();
+	}
+
+	public void updateOffenseCampaignMacros(List<MacroButtonProperties> properties) {
+		MapTool.getCampaign().setOffenseMacroButtonPropertiesArray(new ArrayList<MacroButtonProperties>(properties));
+		forwardToClients();
+	}
+
+	public void updateDefenseCampaignMacros(List<MacroButtonProperties> properties) {
+		MapTool.getCampaign().setDefenseMacroButtonPropertiesArray(new ArrayList<MacroButtonProperties>(properties));
 		forwardToClients();
 	}
 

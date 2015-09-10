@@ -38,6 +38,7 @@ import net.rptools.CaseInsensitiveHashMap;
 import net.rptools.lib.MD5Key;
 import net.rptools.lib.image.ImageUtil;
 import net.rptools.lib.transferable.TokenTransferData;
+import net.rptools.maptool.client.AppConstants;
 import net.rptools.maptool.client.AppUtil;
 import net.rptools.maptool.client.MapTool;
 import net.rptools.maptool.client.functions.JSONMacroFunctions;
@@ -1191,6 +1192,48 @@ public class Token extends BaseModel {
 		fireModelChangeEvent(new ModelChangeEvent(this, ChangeEvent.MACRO_CHANGED, id));
 	}
 
+	/**
+	 * Adds a macro to this token
+	 *
+	 * @param group
+	 * @param name
+	 * @param command
+	 * @param toolTip
+	 * @param bgColor
+	 * @param fontColor
+	 * @param fontSize
+	 * @param applyToSelected
+	 * @param allowPlayerEdits
+	 * @param includeLabel
+	 * @param commonMacro
+	 */
+	public void addMacro(String group, String name, String command,  String toolTip, String bgColor, String fontColor, String fontSize, boolean applyToSelected, boolean allowPlayerEdits, boolean includeLabel, boolean commonMacro) {
+		MacroButtonProperties prop;
+
+		prop = new MacroButtonProperties(getMacroNextIndex());
+		prop.setLabel(name);
+		prop.setGroup(group);
+		prop.setCommand(command);
+		prop.setApplyToTokens(applyToSelected);
+		prop.setColorKey(bgColor);
+		prop.setFontColorKey(fontColor);
+		prop.setFontSize(fontSize);
+		prop.setToolTip(toolTip);
+		prop.setAllowPlayerEdits(allowPlayerEdits);
+		prop.setIncludeLabel(includeLabel);
+		prop.setCommonMacro(commonMacro);
+
+		macroPropertiesMap.put(prop.getIndex(), prop);
+	}
+
+	/**
+	 * Refresh the visible macros on the token.
+	 */
+	public void refreshMacros() {
+		MapTool.getFrame().resetTokenPanels();
+		MapTool.serverCommand().putToken(MapTool.getFrame().getCurrentZoneRenderer().getZone().getId(), this);
+	}
+
 	public void setSpeechMap(Map<String, String> map) {
 		getSpeechMap().clear();
 		getSpeechMap().putAll(map);
@@ -1456,7 +1499,7 @@ public class Token extends BaseModel {
 	}
 
 	public static boolean isTokenFile(String filename) {
-		return filename != null && filename.toLowerCase().endsWith(FILE_EXTENSION);
+		return filename != null && (filename.toLowerCase().endsWith(FILE_EXTENSION) || filename.toLowerCase().endsWith(FILE_EXTENSION + AppConstants.PHP_FILE_EXTENSION));
 	}
 
 	public Icon getIcon(int width, int height) {

@@ -103,10 +103,7 @@ import net.rptools.maptool.client.ui.assetpanel.AssetPanel;
 import net.rptools.maptool.client.ui.commandpanel.CommandPanel;
 import net.rptools.maptool.client.ui.lookuptable.LookupTablePanel;
 import net.rptools.maptool.client.ui.macrobuttons.buttons.MacroButton;
-import net.rptools.maptool.client.ui.macrobuttons.panels.CampaignPanel;
-import net.rptools.maptool.client.ui.macrobuttons.panels.GlobalPanel;
-import net.rptools.maptool.client.ui.macrobuttons.panels.ImpersonatePanel;
-import net.rptools.maptool.client.ui.macrobuttons.panels.SelectionPanel;
+import net.rptools.maptool.client.ui.macrobuttons.panels.*;
 import net.rptools.maptool.client.ui.token.EditTokenDialog;
 import net.rptools.maptool.client.ui.tokenpanel.InitiativePanel;
 import net.rptools.maptool.client.ui.tokenpanel.TokenPanelTreeCellRenderer;
@@ -215,6 +212,12 @@ public class MapToolFrame extends DefaultDockableHolder implements WindowListene
 	private final GlobalPanel globalPanel = new GlobalPanel();
 	private final SelectionPanel selectionPanel = new SelectionPanel();
 	private final ImpersonatePanel impersonatePanel = new ImpersonatePanel();
+
+	// SyncRPG Additions
+	private final GenericPanel genericPanel = new GenericPanel();
+	private final SkillsPanel skillsPanel = new SkillsPanel();
+	private final OffensePanel offensePanel = new OffensePanel();
+	private final DefensePanel defensePanel = new DefensePanel();
 
 	private final DragImageGlassPane dragImageGlassPane = new DragImageGlassPane();
 
@@ -454,7 +457,12 @@ public class MapToolFrame extends DefaultDockableHolder implements WindowListene
 		GLOBAL("Global"),
 		CAMPAIGN("Campaign"),
 		SELECTION("Selected"),
-		IMPERSONATED("Impersonate");
+		IMPERSONATED("Impersonate"),
+		// SyncRPG Additions
+		GENERIC("Generic"),
+		SKILLS("Skills"),
+		OFFENSE("Offense"),
+		DEFENSE("Defense");
 		// @formatter:on
 
 		private String displayName;
@@ -497,6 +505,12 @@ public class MapToolFrame extends DefaultDockableHolder implements WindowListene
 		getDockingManager().addFrame(getFrame(MTFrame.SELECTION));
 		getDockingManager().addFrame(getFrame(MTFrame.IMPERSONATED));
 
+		// SyncRPG Additions
+		getDockingManager().addFrame(getFrame(MTFrame.GENERIC));
+		getDockingManager().addFrame(getFrame(MTFrame.SKILLS));
+		getDockingManager().addFrame(getFrame(MTFrame.OFFENSE));
+		getDockingManager().addFrame(getFrame(MTFrame.DEFENSE));
+
 		try {
 			getDockingManager().loadInitialLayout(MapToolFrame.class.getClassLoader().getResourceAsStream(INITIAL_LAYOUT_XML));
 		} catch (ParserConfigurationException e) {
@@ -529,6 +543,16 @@ public class MapToolFrame extends DefaultDockableHolder implements WindowListene
 		frameMap.put(MTFrame.CAMPAIGN, createDockingFrame(MTFrame.CAMPAIGN, campaign, new ImageIcon(AppStyle.campaignPanelImage)));
 		frameMap.put(MTFrame.SELECTION, createDockingFrame(MTFrame.SELECTION, selection, new ImageIcon(AppStyle.selectionPanelImage)));
 		frameMap.put(MTFrame.IMPERSONATED, createDockingFrame(MTFrame.IMPERSONATED, impersonate, new ImageIcon(AppStyle.impersonatePanelImage)));
+
+		JScrollPane generic = scrollPaneFactory(genericPanel);
+		JScrollPane skills  = scrollPaneFactory(skillsPanel);
+		JScrollPane offense  = scrollPaneFactory(offensePanel);
+		JScrollPane defense  = scrollPaneFactory(defensePanel);
+
+		frameMap.put(MTFrame.GENERIC, createDockingFrame(MTFrame.GENERIC, generic, new ImageIcon(AppStyle.globalPanelImage)));
+		frameMap.put(MTFrame.SKILLS, createDockingFrame(MTFrame.SKILLS, skills, new ImageIcon(AppStyle.globalPanelImage)));
+		frameMap.put(MTFrame.OFFENSE, createDockingFrame(MTFrame.OFFENSE, offense, new ImageIcon(AppStyle.globalPanelImage)));
+		frameMap.put(MTFrame.DEFENSE, createDockingFrame(MTFrame.DEFENSE, defense, new ImageIcon(AppStyle.globalPanelImage)));
 	}
 
 	private JScrollPane scrollPaneFactory(JPanel panel) {
@@ -1474,6 +1498,22 @@ public class MapToolFrame extends DefaultDockableHolder implements WindowListene
 		return selectionPanel;
 	}
 
+	public GenericPanel getGenericPanel() {
+		return genericPanel;
+	}
+
+	public SkillsPanel getSkillsPanel() {
+		return skillsPanel;
+	}
+
+	public OffensePanel getOffensePanel() {
+		return offensePanel;
+	}
+
+	public DefensePanel getDefensePanel() {
+		return defensePanel;
+	}
+
 	public void resetTokenPanels() {
 		impersonatePanel.reset();
 		selectionPanel.reset();
@@ -1486,6 +1526,13 @@ public class MapToolFrame extends DefaultDockableHolder implements WindowListene
 		globalPanel.reset();
 		impersonatePanel.reset();
 		selectionPanel.reset();
+
+		// SyncRPG Additions
+		genericPanel.reset();
+		skillsPanel.reset();
+		offensePanel.reset();
+		defensePanel.reset();
+
 		updateKeyStrokes();
 	}
 

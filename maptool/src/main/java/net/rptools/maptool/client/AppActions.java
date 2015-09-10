@@ -21,25 +21,13 @@ import java.awt.Toolkit;
 import java.awt.Transparency;
 import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.UnknownHostException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Observer;
-import java.util.Set;
+import java.util.*;
 import java.util.zip.GZIPOutputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
@@ -56,6 +44,7 @@ import javax.swing.KeyStroke;
 import net.rptools.lib.FileUtil;
 import net.rptools.lib.MD5Key;
 import net.rptools.lib.image.ImageUtil;
+import net.rptools.lib.io.PackedFile;
 import net.rptools.maptool.client.tool.BoardTool;
 import net.rptools.maptool.client.tool.GridTool;
 import net.rptools.maptool.client.ui.AddResourceDialog;
@@ -86,24 +75,9 @@ import net.rptools.maptool.client.ui.io.UpdateRepoDialog;
 import net.rptools.maptool.client.ui.token.TransferProgressDialog;
 import net.rptools.maptool.client.ui.zone.ZoneRenderer;
 import net.rptools.maptool.language.I18N;
-import net.rptools.maptool.model.Asset;
-import net.rptools.maptool.model.AssetManager;
-import net.rptools.maptool.model.Campaign;
-import net.rptools.maptool.model.CampaignFactory;
-import net.rptools.maptool.model.CampaignProperties;
-import net.rptools.maptool.model.CellPoint;
-import net.rptools.maptool.model.ExposedAreaMetaData;
-import net.rptools.maptool.model.GUID;
-import net.rptools.maptool.model.Grid;
-import net.rptools.maptool.model.LookupTable;
-import net.rptools.maptool.model.Player;
-import net.rptools.maptool.model.TextMessage;
-import net.rptools.maptool.model.Token;
-import net.rptools.maptool.model.Zone;
+import net.rptools.maptool.model.*;
 import net.rptools.maptool.model.Zone.Layer;
 import net.rptools.maptool.model.Zone.VisionType;
-import net.rptools.maptool.model.ZoneFactory;
-import net.rptools.maptool.model.ZonePoint;
 import net.rptools.maptool.model.drawing.DrawableTexturePaint;
 import net.rptools.maptool.server.ServerConfig;
 import net.rptools.maptool.server.ServerPolicy;
@@ -114,6 +88,9 @@ import net.rptools.maptool.util.PersistenceUtil.PersistedMap;
 import net.rptools.maptool.util.SysInfo;
 import net.rptools.maptool.util.UPnPUtil;
 
+import net.sf.json.JSONException;
+import net.sf.json.JSONObject;
+import net.sf.json.JSONSerializer;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.jdesktop.swingworker.SwingWorker;
@@ -1090,6 +1067,142 @@ public class AppActions {
 		}
 	}
 
+	// jmoskie: started adding
+	public static void syncToken(final Token token) {
+		new Thread() {
+			@Override
+			public void run() {
+				long start = System.currentTimeMillis();
+
+				String characterID = (String) token.getProperty("SyncRPG_Character_ID");
+				if(characterID == null || characterID.isEmpty()) {
+					MapTool.addLocalMessage("<font color='#FF0000'><b>ERROR: You are attempting to sync, but there is no characterID set on this Token.</b></font>");
+					return;
+				}
+
+				URL url;
+				try {
+					url = new URL("http://www.syncrpg.com/sam/characterSync.php?id=" + characterID);
+
+					BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()));
+
+					String contents = "";
+					String line;
+					while ((line = in.readLine()) != null)
+						contents += line;
+					in.close();
+
+					JSONObject jsonObject = (JSONObject) JSONSerializer.toJSON(contents);
+
+					if(jsonObject.has("error")) {
+						String error = jsonObject.getString("error");
+						MapTool.addLocalMessage("<font color='#FF0000'><b>ERROR: " + error + "</b></font>");
+						return;
+					}
+
+					JSONObject properties = jsonObject.getJSONObject("properties");
+					Iterator itr = properties.keys();
+
+					while(itr.hasNext()) {
+						String key = (String) itr.next();
+						String val = properties.getString(key);
+
+						if(key.equalsIgnoreCase("size")) {
+
+							ZoneRenderer renderer = MapTool.getFrame().getCurrentZoneRenderer();
+
+							Grid grid = renderer.getZone().getGrid();
+							for (TokenFootprint footprint : grid.getFootprints()) {
+								if(footprint.getName().equalsIgnoreCase(val)
+								   || footprint.getName().startsWith(val.substring(0, 1).toUpperCase())) {
+
+									token.setFootprint(renderer.getZone().getGrid(), footprint);
+									token.setSnapToScale(true);
+									renderer.flush(token);
+									MapTool.serverCommand().putToken(renderer.getZone().getId(), token);
+
+									//									token.setSizeScale(scale)
+								}
+
+							}
+						}
+						else {
+							token.setProperty(key, val);
+						}
+					}
+
+					if(jsonObject.has("macros")) {
+						token.deleteAllMacros(true);
+
+						JSONObject macros = jsonObject.getJSONObject("macros");
+						List<String> addedMacroNames = new ArrayList<String>();
+						itr = macros.keys();
+
+						while(itr.hasNext()) {
+							String name = (String) itr.next();
+							JSONObject macro = macros.getJSONObject(name);
+
+							try {
+								String group = macro.getString("group");
+								String command = macro.getString("command");
+								String toolTip = macro.getString("toolTip");
+								String bgColor = macro.getString("bgColor");
+								String fontColor = macro.getString("fontColor");
+								String fontSize = macro.getString("fontSize");
+								boolean applyToTokens = macro.getBoolean("applyToTokens");
+								boolean allowPlayerEdits = macro.getBoolean("allowPlayerEdits");
+								boolean includeLabel = macro.getBoolean("includeLabel");
+								boolean commonMacro = macro.getBoolean("commonMacro");
+
+								if(!addedMacroNames.contains(name)) {
+									token.addMacro(group, name, command, toolTip, bgColor, fontColor, fontSize, applyToTokens, allowPlayerEdits, includeLabel, commonMacro);
+									token.refreshMacros();
+									addedMacroNames.add(name);
+								}
+							}
+							catch (JSONException e) {
+								System.err.println("JSONException with macro '" + name + "', skipping this macro...");
+								e.printStackTrace();
+							}
+						}
+					}
+
+				}
+				catch(Exception e) {
+					e.printStackTrace();
+				}
+
+				long end = System.currentTimeMillis();
+				long delta = (end - start) / 1000;
+
+				MapTool.addLocalMessage("<b>Token sychronized with <a href='http://www.syncrpg.com/'>SyncRPG.com</a> in " + delta + " seconds.</b>");
+
+				MapTool.getFrame().updateTokenTree();
+				MapTool.getFrame().resetTokenPanels();
+			}
+		}.start();
+	}
+
+	/**
+	 * ...
+	 *
+	 * @param zone
+	 * @param tokenSet
+	 */
+	public static final void syncTokens(Zone zone, Set<GUID> tokenSet) {
+		if(!tokenSet.isEmpty()) {
+			for (GUID tokenGUID : tokenSet) {
+				Token token = zone.getToken(tokenGUID);
+
+				if (AppUtil.playerOwns(token)) {
+					syncToken(token);
+				}
+			}
+		}
+	}
+
+	// jmoskie: stopped adding
+
 	public static final Action REMOVE_ASSET_ROOT = new DefaultClientAction() {
 		{
 			init("action.removeAssetRoot");
@@ -1621,6 +1734,21 @@ public class AppActions {
 		public void execute(ActionEvent e) {
 
 			AppState.setShowTokenNames(!AppState.isShowTokenNames());
+			if (MapTool.getFrame().getCurrentZoneRenderer() != null) {
+				MapTool.getFrame().getCurrentZoneRenderer().repaint();
+			}
+		}
+	};
+
+	public static final Action TOGGLE_SHOW_STATES = new DefaultClientAction() {
+		{
+			init("action.showStates");
+			putValue(Action.SHORT_DESCRIPTION, getValue(Action.NAME));
+		}
+
+		@Override
+		public void execute(ActionEvent e) {
+			AppState.setShowTokenStates(!AppState.isShowTokenStates());
 			if (MapTool.getFrame().getCurrentZoneRenderer() != null) {
 				MapTool.getFrame().getCurrentZoneRenderer().repaint();
 			}
@@ -2412,8 +2540,25 @@ public class AppActions {
 		}
 	}
 
+	public static void loadMap(URL url) throws IOException {
+		// Create a temporary file from the downloaded URL
+		File newFile = new File(PackedFile.getTmpDir(), new GUID() + ".url");
+		FileUtils.copyURLToFile(url, newFile);
+		loadMap(newFile, true);
+	}
+
 	public static void loadMap(final File mapFile) {
-		new Thread() {
+		loadMap(mapFile, false);
+	}
+
+	public static void loadMap(final File mapFile, boolean deleteFile) {
+		class MapLoaderThread implements Runnable {
+			private boolean deleteFile = false;
+
+			public MapLoaderThread(boolean deleteFile) {
+				this.deleteFile = deleteFile;
+			}
+
 			@Override
 			public void run() {
 				try {
@@ -2429,8 +2574,8 @@ public class AppActions {
 
 						if (map != null) {
 							AppPreferences.setLoadDir(mapFile.getParentFile());
-							if ((map.zone.getExposedArea() != null && !map.zone.getExposedArea().isEmpty())
-									|| (map.zone.getExposedAreaMetaData() != null && !map.zone.getExposedAreaMetaData().isEmpty())) {
+							if ((map.zone.getExposedArea() != null && !map.zone.getExposedArea().isEmpty()) ||
+								(map.zone.getExposedAreaMetaData() != null && !map.zone.getExposedAreaMetaData().isEmpty())) {
 								boolean ok = MapTool.confirm("<html>Map contains exposed areas of fog.<br>Do you want to reset all of the fog?");
 								if (ok == true) {
 									// This fires a ModelChangeEvent, but that shouldn't matter
@@ -2455,12 +2600,19 @@ public class AppActions {
 						}
 					} finally {
 						MapTool.getFrame().hideGlassPane();
+						if(deleteFile) {	// jmoskie: TODO: ensure this works.
+							mapFile.delete();
+						}
 					}
 				} catch (IOException ioe) {
 					MapTool.showError("msg.error.failedLoadMap", ioe);
 				}
 			}
-		}.start();
+
+		}
+
+		Thread loaderThread = new Thread(new MapLoaderThread(deleteFile));
+		loaderThread.start();
 	}
 
 	public static final Action CAMPAIGN_PROPERTIES = new DefaultClientAction() {

@@ -24,6 +24,7 @@ public class AppState {
 	private static boolean showGrid = false;
 	private static boolean showCoordinates = false;
 	private static boolean showTokenNames = false;
+	private static boolean showTokenStates = true;
 	private static boolean linkPlayerViews = false;
 	private static boolean useDoubleWideLine = true;
 	private static boolean showMovementMeasurements = true;
@@ -103,8 +104,16 @@ public class AppState {
 		showTokenNames = flag;
 	}
 
+	public static void setShowTokenStates(boolean flag) {
+		showTokenStates = flag;
+	}
+
 	public static boolean isShowTokenNames() {
 		return showTokenNames;
+	}
+
+	public static boolean isShowTokenStates() {
+		return showTokenStates;
 	}
 
 	public static boolean isPlayerViewLinked() {

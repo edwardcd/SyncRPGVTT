@@ -392,6 +392,16 @@ public abstract class AbstractTokenPopupMenu extends JPopupMenu {
 		}
 	}
 
+	public class SyncAction extends AbstractAction {
+		public SyncAction() {
+			putValue(Action.NAME, "Sync...");
+		}
+
+		public void actionPerformed(ActionEvent e) {
+			AppActions.syncTokens(renderer.getZone(), selectedTokenSet);
+		}
+	}
+
 	public class ToggleLightSourceAction extends AbstractAction {
 		private final LightSource lightSource;
 

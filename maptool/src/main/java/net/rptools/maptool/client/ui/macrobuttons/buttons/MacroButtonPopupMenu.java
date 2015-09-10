@@ -47,7 +47,12 @@ public class MacroButtonPopupMenu extends JPopupMenu{
 			} else {
 				addActions();
 			}
-		} else if(panelClass.equals("CampaignPanel")) {
+		} else if( panelClass.equals("CampaignPanel")
+				   || panelClass.equals("GenericPanel")
+				   || panelClass.equals("SkillsPanel")
+				   || panelClass.equals("OffensePanel")
+				   || panelClass.equals("DefensePanel")
+						) {
 			addCampaignActions();
 		} else {
 			addActions();
@@ -126,6 +131,14 @@ public class MacroButtonPopupMenu extends JPopupMenu{
 				new MacroButtonProperties(panelClass, MacroButtonPrefs.getNextIndex(), button.getProperties().getGroup());
 			} else if (panelClass.equals("CampaignPanel")) {
 				new MacroButtonProperties(panelClass, MapTool.getCampaign().getMacroButtonNextIndex(), button.getProperties().getGroup());
+			} else if (panelClass.equals("GenericPanel")) {
+				new MacroButtonProperties(panelClass, MapTool.getCampaign().getGenericMacroButtonNextIndex(), button.getProperties().getGroup());
+			} else if (panelClass.equals("SkillsPanel")) {
+				new MacroButtonProperties(panelClass, MapTool.getCampaign().getSkillsMacroButtonNextIndex(), button.getProperties().getGroup());
+			} else if (panelClass.equals("OffensePanel")) {
+				new MacroButtonProperties(panelClass, MapTool.getCampaign().getOffenseMacroButtonNextIndex(), button.getProperties().getGroup());
+			} else if (panelClass.equals("DefensePanel")) {
+				new MacroButtonProperties(panelClass, MapTool.getCampaign().getDefenseMacroButtonNextIndex(), button.getProperties().getGroup());
 			} else if(panelClass.equals("SelectionPanel")) {
 				if(MapTool.getFrame().getSelectionPanel().getCommonMacros().contains(button.getProperties())) {
 					for(Token nextToken : MapTool.getFrame().getCurrentZoneRenderer().getSelectedTokensList()) {
@@ -169,6 +182,14 @@ public class MacroButtonPopupMenu extends JPopupMenu{
 					MacroButtonPrefs.delete(button.getProperties());
 				} else if (panelClass.equals("CampaignPanel")) {
 					MapTool.getCampaign().deleteMacroButton(button.getProperties());
+				} else if (panelClass.equals("GenericPanel")) {
+					MapTool.getCampaign().deleteGenericMacroButton(button.getProperties());
+				} else if (panelClass.equals("SkillsPanel")) {
+					MapTool.getCampaign().deleteSkillsMacroButton(button.getProperties());
+				} else if (panelClass.equals("OffensePanel")) {
+					MapTool.getCampaign().deleteOffenseMacroButton(button.getProperties());
+				} else if (panelClass.equals("DefensePanel")) {
+					MapTool.getCampaign().deleteDefenseMacroButton(button.getProperties());
 				} else if(panelClass.equals("SelectionPanel")) {
 					if(MapTool.getFrame().getSelectionPanel().getCommonMacros().contains(button.getProperties())) {
 						for(Token nextToken : MapTool.getFrame().getCurrentZoneRenderer().getSelectedTokensList()) {
@@ -213,6 +234,14 @@ public class MacroButtonPopupMenu extends JPopupMenu{
 				new MacroButtonProperties(panelClass, MacroButtonPrefs.getNextIndex(), button.getProperties());
 			} else if (panelClass.equals("CampaignPanel")) {
 				new MacroButtonProperties(panelClass, MapTool.getCampaign().getMacroButtonNextIndex(), button.getProperties());
+			} else if (panelClass.equals("GenericPanel")) {
+				new MacroButtonProperties(panelClass, MapTool.getCampaign().getGenericMacroButtonNextIndex(), button.getProperties());
+			} else if (panelClass.equals("SkillsPanel")) {
+				new MacroButtonProperties(panelClass, MapTool.getCampaign().getSkillsMacroButtonNextIndex(), button.getProperties());
+			} else if (panelClass.equals("OffensePanel")) {
+				new MacroButtonProperties(panelClass, MapTool.getCampaign().getOffenseMacroButtonNextIndex(), button.getProperties());
+			} else if (panelClass.equals("DefensePanel")) {
+				new MacroButtonProperties(panelClass, MapTool.getCampaign().getDefenseMacroButtonNextIndex(), button.getProperties());
 			} else if(panelClass.equals("SelectionPanel")) {
 				if(MapTool.getFrame().getSelectionPanel().getCommonMacros().contains(button.getProperties())) {
 					for(Token nextToken : MapTool.getFrame().getCurrentZoneRenderer().getSelectedTokensList()) {

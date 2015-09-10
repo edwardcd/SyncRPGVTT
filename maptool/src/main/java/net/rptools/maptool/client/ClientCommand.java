@@ -62,6 +62,11 @@ public class ClientCommand {
         enforceNotification, // enforces notification of typing in the chat window
         exposePCArea,
         setBoard, 
-        updateExposedAreaMeta
+        updateExposedAreaMeta,
+        // SyncRPG additions
+        updateGenericCampaignMacros,
+        updateSkillsCampaignMacros,
+        updateOffenseCampaignMacros,
+        updateDefenseCampaignMacros
     };
 }

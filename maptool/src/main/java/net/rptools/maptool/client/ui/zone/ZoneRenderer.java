@@ -2628,7 +2628,7 @@ public class ZoneRenderer extends JComponent implements DropTargetListener, Comp
 				if (stateValue instanceof AbstractTokenOverlay) {
 					overlay = (AbstractTokenOverlay) stateValue;
 				}
-				if (overlay == null || overlay.isMouseover() && token != tokenUnderMouse || !overlay.showPlayer(token, MapTool.getPlayer())) {
+				if (overlay == null || overlay.isMouseover() && token != tokenUnderMouse && !AppState.isShowTokenStates() || !overlay.showPlayer(token, MapTool.getPlayer())) {
 					continue;
 				}
 				overlay.paintOverlay(locg, token, bounds, stateValue);
@@ -2639,7 +2639,7 @@ public class ZoneRenderer extends JComponent implements DropTargetListener, Comp
 			for (String bar : MapTool.getCampaign().getTokenBarsMap().keySet()) {
 				Object barValue = token.getState(bar);
 				BarTokenOverlay overlay = MapTool.getCampaign().getTokenBarsMap().get(bar);
-				if (overlay == null || overlay.isMouseover() && token != tokenUnderMouse || !overlay.showPlayer(token, MapTool.getPlayer())) {
+				if (overlay == null || overlay.isMouseover() && token != tokenUnderMouse && !AppState.isShowTokenStates() || !overlay.showPlayer(token, MapTool.getPlayer())) {
 					continue;
 				}
 				overlay.paintOverlay(locg, token, bounds, barValue);

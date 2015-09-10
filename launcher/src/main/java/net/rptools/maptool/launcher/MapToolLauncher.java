@@ -225,7 +225,7 @@ public class MapToolLauncher extends JFrame {
 		locales = CopiedFromOtherJars.getListOfLanguages(fromDir);
 
 		cfgFile = new File(currentDir, "mt.cfg"); //$NON-NLS-1$
-		icon = new ImageIcon(getClass().getResource("MapToolLogo90x90.png")); //$NON-NLS-1$
+		icon = new ImageIcon(getClass().getResource("SyncRPGLogo90x90.png")); //$NON-NLS-1$
 		// This must be done before calling any methods of CopiedFromOtherJars or the LOCALE setting won't work.
 		readCfgFile();
 

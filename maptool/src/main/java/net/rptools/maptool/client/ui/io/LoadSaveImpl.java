@@ -76,6 +76,10 @@ public class LoadSaveImpl {
 				addDataObjects("Campaign/Properties/Bars", cmpgn.getTokenBarsMap());
 				addDataObjects("Campaign/Properties/Tables", cmpgn.getLookupTableMap());
 				addDataObjects("Campaign/CampaignMacros", cmpgn.getMacroButtonPropertiesArray());
+				addDataObjects("Campaign/GenericMacros", cmpgn.getGenericMacroButtonPropertiesArray());
+				addDataObjects("Campaign/SkillsMacros", cmpgn.getSkillsMacroButtonPropertiesArray());
+				addDataObjects("Campaign/OffenseMacros", cmpgn.getOffenseMacroButtonPropertiesArray());
+				addDataObjects("Campaign/DefenseMacros", cmpgn.getDefenseMacroButtonPropertiesArray());
 				addDataObjects("Campaign/Maps", cmpgn.getZones());
 			}
 		});
@@ -95,6 +99,10 @@ public class LoadSaveImpl {
 		List<MacroButtonProperties> macros = cmpgn.getMacroButtonPropertiesArray();
 		Map<String, MacroButtonProperties> global = new HashMap<String, MacroButtonProperties>();
 		Map<String, MacroButtonProperties> campaign = new HashMap<String, MacroButtonProperties>();
+		Map<String, MacroButtonProperties> generic = new HashMap<String, MacroButtonProperties>();
+		Map<String, MacroButtonProperties> skills = new HashMap<String, MacroButtonProperties>();
+		Map<String, MacroButtonProperties> offense = new HashMap<String, MacroButtonProperties>();
+		Map<String, MacroButtonProperties> defense = new HashMap<String, MacroButtonProperties>();
 		Map<String, MacroButtonProperties> other = new HashMap<String, MacroButtonProperties>();
 
 		for (MacroButtonProperties macro : macros) {
@@ -103,6 +111,14 @@ public class LoadSaveImpl {
 				global.put(macro.getLabel(), macro);
 			else if (loc.equals("CampaignPanel"))
 				campaign.put(macro.getLabel(), macro);
+			else if (loc.equals("GenericPanel"))
+				generic.put(macro.getLabel(), macro);
+			else if (loc.equals("SkillsPanel"))
+				skills.put(macro.getLabel(), macro);
+			else if (loc.equals("OffensePanel"))
+				offense.put(macro.getLabel(), macro);
+			else if (loc.equals("DefensePanel"))
+				defense.put(macro.getLabel(), macro);
 			else {
 				log.debug("Ignoring " + loc + " macro button property");
 				other.put(loc, macro);
@@ -110,6 +126,10 @@ public class LoadSaveImpl {
 		}
 		oneMacroCategory("Campaign/Properties/Macros/Global", global, model);
 		oneMacroCategory("Campaign/Properties/Macros/Campaign", campaign, model);
+		oneMacroCategory("Campaign/Properties/Macros/Generic", generic, model);
+		oneMacroCategory("Campaign/Properties/Macros/Skills", skills, model);
+		oneMacroCategory("Campaign/Properties/Macros/Offense", offense, model);
+		oneMacroCategory("Campaign/Properties/Macros/Defense", defense, model);
 		oneMacroCategory("Campaign/Properties/Macros/Other", other, model);
 	}
 	private void oneMacroCategory(String where, Map<String, MacroButtonProperties> map, UIBuilder.TreeModel model) {

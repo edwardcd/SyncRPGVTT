@@ -304,6 +304,22 @@ public class MacroButtonDialog extends JDialog {
 			MapTool.serverCommand().updateCampaignMacros(MapTool.getCampaign().getMacroButtonPropertiesArray());
 			MapTool.getFrame().getCampaignPanel().reset();
 		}
+		else if (button.getPanelClass().equals("GenericPanel")) {
+			MapTool.serverCommand().updateGenericCampaignMacros(MapTool.getCampaign().getGenericMacroButtonPropertiesArray());
+			MapTool.getFrame().getGenericPanel().reset();
+		}
+		else if (button.getPanelClass().equals("SkillsPanel")) {
+			MapTool.serverCommand().updateSkillsCampaignMacros(MapTool.getCampaign().getSkillsMacroButtonPropertiesArray());
+			MapTool.getFrame().getSkillsPanel().reset();
+		}
+		else if (button.getPanelClass().equals("OffensePanel")) {
+			MapTool.serverCommand().updateOffenseCampaignMacros(MapTool.getCampaign().getOffenseMacroButtonPropertiesArray());
+			MapTool.getFrame().getOffensePanel().reset();
+		}
+		else if (button.getPanelClass().equals("DefensePanel")) {
+			MapTool.serverCommand().updateDefenseCampaignMacros(MapTool.getCampaign().getDefenseMacroButtonPropertiesArray());
+			MapTool.getFrame().getDefensePanel().reset();
+		}
 		setVisible(false);
 //		dispose();
 	}

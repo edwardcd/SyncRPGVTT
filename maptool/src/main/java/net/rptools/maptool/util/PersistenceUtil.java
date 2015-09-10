@@ -821,6 +821,13 @@ public class PersistenceUtil {
 		return mbProps;
 	}
 
+	public static MacroButtonProperties loadMacro(URL url) throws IOException {
+		// Create a temporary file from the downloaded URL
+		File newFile = new File(PackedFile.getTmpDir(), new GUID() + ".url");
+		FileUtils.copyURLToFile(url, newFile);
+		return loadMacro(newFile);
+	}
+
 	public static MacroButtonProperties loadMacro(File file) throws IOException {
 		PackedFile pakFile = null;
 		try {
@@ -882,6 +889,13 @@ public class PersistenceUtil {
 			MapTool.showError("PersistenceUtil.error.macrosetVersion", ce);
 		}
 		return macroButtonSet;
+	}
+
+	public static List<MacroButtonProperties> loadMacroSet(URL url) throws IOException {
+		// Create a temporary file from the downloaded URL
+		File newFile = new File(PackedFile.getTmpDir(), new GUID() + ".url");
+		FileUtils.copyURLToFile(url, newFile);
+		return loadMacroSet(newFile);
 	}
 
 	@SuppressWarnings("unchecked")

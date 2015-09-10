@@ -72,6 +72,18 @@ public class Campaign {
 	// otherwise deletions/insertions from/to that array will go out of sync
 	private int macroButtonLastIndex = 0;
 
+	private List<MacroButtonProperties> genericMacroButtonProperties = new ArrayList<MacroButtonProperties>();
+	private int genericMacroButtonLastIndex = 0;
+
+	private List<MacroButtonProperties> skillsMacroButtonProperties = new ArrayList<MacroButtonProperties>();
+	private int skillsMacroButtonLastIndex = 0;
+
+	private List<MacroButtonProperties> offenseMacroButtonProperties = new ArrayList<MacroButtonProperties>();
+	private int offenseMacroButtonLastIndex = 0;
+
+	private List<MacroButtonProperties> defenseMacroButtonProperties = new ArrayList<MacroButtonProperties>();
+	private int defenseMacroButtonLastIndex = 0;
+
 	// DEPRECATED: As of 1.3b20 these are now in campaignProperties, but are here for backward compatibility
 	private Map<String, List<TokenProperty>> tokenTypeMap;
 	private List<String> remoteRepositoryList;
@@ -97,6 +109,18 @@ public class Campaign {
 	public Campaign() {
 		macroButtonLastIndex = 0;
 		macroButtonProperties = new ArrayList<MacroButtonProperties>();
+
+		genericMacroButtonLastIndex = 0;
+		genericMacroButtonProperties = new ArrayList<MacroButtonProperties>();
+
+		skillsMacroButtonLastIndex = 0;
+		skillsMacroButtonProperties = new ArrayList<MacroButtonProperties>();
+
+		offenseMacroButtonLastIndex = 0;
+		offenseMacroButtonProperties = new ArrayList<MacroButtonProperties>();
+
+		defenseMacroButtonLastIndex = 0;
+		defenseMacroButtonProperties = new ArrayList<MacroButtonProperties>();
 	}
 
 	private void checkCampaignPropertyConversion() {
@@ -140,6 +164,10 @@ public class Campaign {
 		}
 		campaignProperties = new CampaignProperties(campaign.campaignProperties);
 		macroButtonProperties = new ArrayList<MacroButtonProperties>(campaign.getMacroButtonPropertiesArray());
+		genericMacroButtonProperties = new ArrayList<MacroButtonProperties>(campaign.getGenericMacroButtonPropertiesArray());
+		skillsMacroButtonProperties = new ArrayList<MacroButtonProperties>(campaign.getSkillsMacroButtonPropertiesArray());
+		offenseMacroButtonProperties = new ArrayList<MacroButtonProperties>(campaign.getOffenseMacroButtonPropertiesArray());
+		defenseMacroButtonProperties = new ArrayList<MacroButtonProperties>(campaign.getDefenseMacroButtonPropertiesArray());
 	}
 
 	public GUID getId() {
@@ -380,6 +408,52 @@ public class Campaign {
 		return macroButtonProperties;
 	}
 
+	public List<MacroButtonProperties> getGenericMacroButtonPropertiesArray() {
+		if (genericMacroButtonProperties == null) {
+			// genericMacroButtonProperties is null if you are loading an old campaign file < 1.3b32
+			genericMacroButtonProperties = new ArrayList<MacroButtonProperties>();
+		}
+		return genericMacroButtonProperties;
+	}
+
+	public void setGenericMacroButtonPropertiesArray(List<MacroButtonProperties> properties) {
+		genericMacroButtonProperties = properties;
+	}
+
+
+	public List<MacroButtonProperties> getSkillsMacroButtonPropertiesArray() {
+		if (skillsMacroButtonProperties == null) {
+			skillsMacroButtonProperties = new ArrayList<MacroButtonProperties>();
+		}
+		return skillsMacroButtonProperties;
+	}
+
+	public void setSkillsMacroButtonPropertiesArray(List<MacroButtonProperties> properties) {
+		skillsMacroButtonProperties = properties;
+	}
+
+	public List<MacroButtonProperties> getOffenseMacroButtonPropertiesArray() {
+		if (offenseMacroButtonProperties == null) {
+			offenseMacroButtonProperties = new ArrayList<MacroButtonProperties>();
+		}
+		return offenseMacroButtonProperties;
+	}
+
+	public void setOffenseMacroButtonPropertiesArray(List<MacroButtonProperties> properties) {
+		offenseMacroButtonProperties = properties;
+	}
+
+	public List<MacroButtonProperties> getDefenseMacroButtonPropertiesArray() {
+		if (defenseMacroButtonProperties == null) {
+			defenseMacroButtonProperties = new ArrayList<MacroButtonProperties>();
+		}
+		return defenseMacroButtonProperties;
+	}
+
+	public void setDefenseMacroButtonPropertiesArray(List<MacroButtonProperties> properties) {
+		defenseMacroButtonProperties = properties;
+	}
+
 	public void setMacroButtonPropertiesArray(List<MacroButtonProperties> properties) {
 		macroButtonProperties = properties;
 	}
@@ -412,6 +486,114 @@ public class Campaign {
 		MapTool.getFrame().getCampaignPanel().reset();
 	}
 
+	public void saveGenericMacroButtonProperty(MacroButtonProperties properties) {
+		for (MacroButtonProperties prop : genericMacroButtonProperties) {
+			if (prop.getIndex() == properties.getIndex()) {
+				prop.setColorKey(properties.getColorKey());
+				prop.setAutoExecute(properties.getAutoExecute());
+				prop.setCommand(properties.getCommand());
+				prop.setHotKey(properties.getHotKey());
+				prop.setIncludeLabel(properties.getIncludeLabel());
+				prop.setApplyToTokens(properties.getApplyToTokens());
+				prop.setLabel(properties.getLabel());
+				prop.setGroup(properties.getGroup());
+				prop.setSortby(properties.getSortby());
+				prop.setFontColorKey(properties.getFontColorKey());
+				prop.setFontSize(properties.getFontSize());
+				prop.setMinWidth(properties.getMinWidth());
+				prop.setMaxWidth(properties.getMaxWidth());
+				prop.setToolTip(properties.getToolTip());
+				prop.setAllowPlayerEdits(properties.getAllowPlayerEdits());
+				MapTool.getFrame().getGenericPanel().reset();
+				return;
+			}
+		}
+		genericMacroButtonProperties.add(properties);
+
+		MapTool.getFrame().getGenericPanel().reset();
+	}
+
+	public void saveSkillsMacroButtonProperty(MacroButtonProperties properties) {
+		for (MacroButtonProperties prop : skillsMacroButtonProperties) {
+			if (prop.getIndex() == properties.getIndex()) {
+				prop.setColorKey(properties.getColorKey());
+				prop.setAutoExecute(properties.getAutoExecute());
+				prop.setCommand(properties.getCommand());
+				prop.setHotKey(properties.getHotKey());
+				prop.setIncludeLabel(properties.getIncludeLabel());
+				prop.setApplyToTokens(properties.getApplyToTokens());
+				prop.setLabel(properties.getLabel());
+				prop.setGroup(properties.getGroup());
+				prop.setSortby(properties.getSortby());
+				prop.setFontColorKey(properties.getFontColorKey());
+				prop.setFontSize(properties.getFontSize());
+				prop.setMinWidth(properties.getMinWidth());
+				prop.setMaxWidth(properties.getMaxWidth());
+				prop.setToolTip(properties.getToolTip());
+				prop.setAllowPlayerEdits(properties.getAllowPlayerEdits());
+				MapTool.getFrame().getSkillsPanel().reset();
+				return;
+			}
+		}
+		skillsMacroButtonProperties.add(properties);
+
+		MapTool.getFrame().getSkillsPanel().reset();
+	}
+
+	public void saveOffenseMacroButtonProperty(MacroButtonProperties properties) {
+		for (MacroButtonProperties prop : offenseMacroButtonProperties) {
+			if (prop.getIndex() == properties.getIndex()) {
+				prop.setColorKey(properties.getColorKey());
+				prop.setAutoExecute(properties.getAutoExecute());
+				prop.setCommand(properties.getCommand());
+				prop.setHotKey(properties.getHotKey());
+				prop.setIncludeLabel(properties.getIncludeLabel());
+				prop.setApplyToTokens(properties.getApplyToTokens());
+				prop.setLabel(properties.getLabel());
+				prop.setGroup(properties.getGroup());
+				prop.setSortby(properties.getSortby());
+				prop.setFontColorKey(properties.getFontColorKey());
+				prop.setFontSize(properties.getFontSize());
+				prop.setMinWidth(properties.getMinWidth());
+				prop.setMaxWidth(properties.getMaxWidth());
+				prop.setToolTip(properties.getToolTip());
+				prop.setAllowPlayerEdits(properties.getAllowPlayerEdits());
+				MapTool.getFrame().getOffensePanel().reset();
+				return;
+			}
+		}
+		offenseMacroButtonProperties.add(properties);
+
+		MapTool.getFrame().getOffensePanel().reset();
+	}
+
+	public void saveDefenseMacroButtonProperty(MacroButtonProperties properties) {
+		for (MacroButtonProperties prop : defenseMacroButtonProperties) {
+			if (prop.getIndex() == properties.getIndex()) {
+				prop.setColorKey(properties.getColorKey());
+				prop.setAutoExecute(properties.getAutoExecute());
+				prop.setCommand(properties.getCommand());
+				prop.setHotKey(properties.getHotKey());
+				prop.setIncludeLabel(properties.getIncludeLabel());
+				prop.setApplyToTokens(properties.getApplyToTokens());
+				prop.setLabel(properties.getLabel());
+				prop.setGroup(properties.getGroup());
+				prop.setSortby(properties.getSortby());
+				prop.setFontColorKey(properties.getFontColorKey());
+				prop.setFontSize(properties.getFontSize());
+				prop.setMinWidth(properties.getMinWidth());
+				prop.setMaxWidth(properties.getMaxWidth());
+				prop.setToolTip(properties.getToolTip());
+				prop.setAllowPlayerEdits(properties.getAllowPlayerEdits());
+				MapTool.getFrame().getDefensePanel().reset();
+				return;
+			}
+		}
+		defenseMacroButtonProperties.add(properties);
+
+		MapTool.getFrame().getDefensePanel().reset();
+	}
+
 	public int getMacroButtonNextIndex() {
 		for (MacroButtonProperties prop : macroButtonProperties) {
 			if (prop.getIndex() > macroButtonLastIndex) {
@@ -421,9 +603,65 @@ public class Campaign {
 		return ++macroButtonLastIndex;
 	}
 
+	public int getGenericMacroButtonNextIndex() {
+		for (MacroButtonProperties prop : genericMacroButtonProperties) {
+			if (prop.getIndex() > genericMacroButtonLastIndex) {
+				genericMacroButtonLastIndex = prop.getIndex();
+			}
+		}
+		return ++genericMacroButtonLastIndex;
+	}
+
+	public int getSkillsMacroButtonNextIndex() {
+		for (MacroButtonProperties prop : skillsMacroButtonProperties) {
+			if (prop.getIndex() > skillsMacroButtonLastIndex) {
+				skillsMacroButtonLastIndex = prop.getIndex();
+			}
+		}
+		return ++skillsMacroButtonLastIndex;
+	}
+
+	public int getOffenseMacroButtonNextIndex() {
+		for (MacroButtonProperties prop : offenseMacroButtonProperties) {
+			if (prop.getIndex() > offenseMacroButtonLastIndex) {
+				offenseMacroButtonLastIndex = prop.getIndex();
+			}
+		}
+		return ++offenseMacroButtonLastIndex;
+	}
+
+	public int getDefenseMacroButtonNextIndex() {
+		for (MacroButtonProperties prop : defenseMacroButtonProperties) {
+			if (prop.getIndex() > defenseMacroButtonLastIndex) {
+				defenseMacroButtonLastIndex = prop.getIndex();
+			}
+		}
+		return ++defenseMacroButtonLastIndex;
+	}
+
 	public void deleteMacroButton(MacroButtonProperties properties) {
 		macroButtonProperties.remove(properties);
 		MapTool.getFrame().getCampaignPanel().reset();
+	}
+
+	public void deleteGenericMacroButton(MacroButtonProperties properties) {
+		genericMacroButtonProperties.remove(properties);
+		MapTool.getFrame().getGenericPanel().reset();
+	}
+
+	public void deleteSkillsMacroButton(MacroButtonProperties properties) {
+		skillsMacroButtonProperties.remove(properties);
+		MapTool.getFrame().getSkillsPanel().reset();
+	}
+
+	public void deleteOffenseMacroButton(MacroButtonProperties properties) {
+		offenseMacroButtonProperties.remove(properties);
+		MapTool.getFrame().getOffensePanel().reset();
+	}
+
+	public void deleteDefenseMacroButton(MacroButtonProperties properties) {
+		defenseMacroButtonProperties.remove(properties);
+		MapTool.getFrame().getDefensePanel().reset();
 	}
 
 	/**

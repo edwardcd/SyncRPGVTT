@@ -39,9 +39,13 @@ import net.rptools.lib.transferable.GroupTokenTransferData;
 import net.rptools.lib.transferable.ImageTransferableHandler;
 import net.rptools.lib.transferable.MapToolTokenTransferData;
 import net.rptools.lib.transferable.TokenTransferData;
+import net.rptools.maptool.client.functions.MapFunctions;
+import net.rptools.maptool.client.ui.macrobuttons.buttongroups.ButtonGroup;
+import net.rptools.maptool.client.ui.macrobuttons.buttons.MacroButton;
 import net.rptools.maptool.language.I18N;
 import net.rptools.maptool.model.Asset;
 import net.rptools.maptool.model.AssetManager;
+import net.rptools.maptool.model.MacroButtonProperties;
 import net.rptools.maptool.model.Token;
 import net.rptools.maptool.util.PersistenceUtil;
 import net.rptools.maptool.util.StringUtil;
@@ -382,6 +386,22 @@ public class TransferableHelper extends TransferHandler {
 					// will strip out anything in the List that isn't an Asset anyway...
 					Token token = PersistenceUtil.loadToken(url);
 					assets.add(token);
+				}
+				else if(MapFunctions.isMapFile(url.getPath())) {
+					if(MapTool.getPlayer().isGM()) {
+						AppActions.loadMap(url);
+						assets.add(new PersistenceUtil.PersistedMap());	// empty map.
+					}
+				}
+				else if(MacroButton.isMacroButtonFile(url.getPath())) {
+					MacroButtonProperties macro = PersistenceUtil.loadMacro(url);
+					assets.add(macro);
+				}
+				else if(ButtonGroup.isMacroButtonGroupFile(url.getPath())) {
+					List<MacroButtonProperties> macroSet = PersistenceUtil.loadMacroSet(url);
+					for(MacroButtonProperties macro : macroSet) {
+						assets.add(macro);
+					}
 				} else {
 					Asset temp = AssetManager.createAsset(url);
 					if (temp != null) // `null' means no image available
@@ -391,6 +411,7 @@ public class TransferableHelper extends TransferHandler {
 				}
 			}
 		}
+
 		return assets;
 	}
 
@@ -571,6 +592,10 @@ public class TransferableHelper extends TransferHandler {
 					tokens.add(token);
 					// A token from an .rptok file is already fully configured.
 					configureTokens.add(false);
+				}
+				else if (working instanceof PersistenceUtil.PersistedMap) {
+					// jmoskie: it looks like I don't have to actually do anything here, loadMap handled all the assets.
+					// leaving this here in case i realize i'm wrong, or want to add extra handling.
 				}
 			}
 		} else {

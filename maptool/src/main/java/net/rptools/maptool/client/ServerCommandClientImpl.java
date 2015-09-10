@@ -243,6 +243,23 @@ public class ServerCommandClientImpl implements ServerCommand {
 		makeServerCall(COMMAND.updateCampaignMacros, properties);
 	}
 
+	public void updateGenericCampaignMacros(List<MacroButtonProperties> properties) {
+		makeServerCall(COMMAND.updateGenericCampaignMacros, properties);
+	}
+
+	public void updateSkillsCampaignMacros(List<MacroButtonProperties> properties) {
+		makeServerCall(COMMAND.updateSkillsCampaignMacros, properties);
+	}
+
+	public void updateOffenseCampaignMacros(List<MacroButtonProperties> properties) {
+		makeServerCall(COMMAND.updateOffenseCampaignMacros, properties);
+	}
+
+	public void updateDefenseCampaignMacros(List<MacroButtonProperties> properties) {
+		makeServerCall(COMMAND.updateDefenseCampaignMacros, properties);
+	}
+
+
 	private static void makeServerCall(ServerCommand.COMMAND command, Object... params) {
 		if (MapTool.getConnection() != null) {
 			MapTool.getConnection().callMethod(command.name(), params);

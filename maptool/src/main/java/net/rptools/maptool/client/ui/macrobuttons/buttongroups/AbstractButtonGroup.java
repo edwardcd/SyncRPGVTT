@@ -193,7 +193,13 @@ public abstract class AbstractButtonGroup extends JPanel implements DropTargetLi
 	public void mouseReleased(MouseEvent event)	{
 		Token token = getToken();
 		if (SwingUtilities.isRightMouseButton(event)) {
-			if (getPanelClass()=="CampaignPanel" && !MapTool.getPlayer().isGM()) {
+			if ((	   getPanelClass().equals("CampaignPanel")
+						|| getPanelClass().equals("GenericPanel")
+						|| getPanelClass().equals("SkillsPanel")
+						|| getPanelClass().equals("OffensePanel")
+						|| getPanelClass().equals("DefensePanel")
+				)
+				&& !MapTool.getPlayer().isGM()) {
 				return;
 			}
 			// open button group menu

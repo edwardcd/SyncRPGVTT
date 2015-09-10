@@ -302,6 +302,14 @@ public class MacroButtonProperties implements Comparable<MacroButtonProperties> 
 			MacroButtonPrefs.savePreferences(this);
 		} else if (saveLocation.equals("CampaignPanel")) {
 			MapTool.getCampaign().saveMacroButtonProperty(this);
+		} else if (saveLocation.equals("GenericPanel")) {
+			MapTool.getCampaign().saveGenericMacroButtonProperty(this);
+		} else if (saveLocation.equals("SkillsPanel")) {
+			MapTool.getCampaign().saveSkillsMacroButtonProperty(this);
+		} else if (saveLocation.equals("OffensePanel")) {
+			MapTool.getCampaign().saveOffenseMacroButtonProperty(this);
+		} else if (saveLocation.equals("DefensePanel")) {
+			MapTool.getCampaign().saveDefenseMacroButtonProperty(this);
 		}
 	}
 
@@ -395,7 +403,12 @@ public class MacroButtonProperties implements Comparable<MacroButtonProperties> 
 					if (allowPlayerEdits == null) {
 						allowPlayerEdits = false;
 					}
-					if (saveLocation.equals("CampaignPanel") || !allowPlayerEdits) {
+					if ((	   saveLocation.equals("GenericPanel")
+								|| saveLocation.equals("SkillsPanel")
+								|| saveLocation.equals("OffensePanel")
+								|| saveLocation.equals("DefensePanel")
+						)
+						|| !allowPlayerEdits) {
 						trusted = true;
 					}
 					if (saveLocation.equals("GlobalPanel")) {
@@ -403,6 +416,14 @@ public class MacroButtonProperties implements Comparable<MacroButtonProperties> 
 						trusted = MapTool.getPlayer().isGM();
 					} else if (saveLocation.equals("CampaignPanel")) {
 						loc = "campaign";
+					} else if (saveLocation.equals("GenericPanel")) {
+						loc = "generic";
+					} else if (saveLocation.equals("SkillsPanel")) {
+						loc = "skills";
+					} else if (saveLocation.equals("OffensePanel")) {
+						loc = "offense";
+					} else if (saveLocation.equals("DefencesPanel")) {
+						loc = "defense";
 					} else if (contextToken != null) {
 						// Should this IF stmt really be:
 						//		contextToken.matches("^[^:\\s]+:")
@@ -669,6 +690,14 @@ public class MacroButtonProperties implements Comparable<MacroButtonProperties> 
 		List<MacroButtonProperties> existingMacroList = null;
 		if (source.equalsIgnoreCase("CampaignPanel")) {
 			existingMacroList = MapTool.getCampaign().getMacroButtonPropertiesArray();
+		} else if (source.equalsIgnoreCase("GenericPanel")) {
+			existingMacroList = MapTool.getCampaign().getGenericMacroButtonPropertiesArray();
+		} else if (source.equalsIgnoreCase("SkillsPanel")) {
+			existingMacroList = MapTool.getCampaign().getSkillsMacroButtonPropertiesArray();
+		} else if (source.equalsIgnoreCase("OffensePanel")) {
+			existingMacroList = MapTool.getCampaign().getOffenseMacroButtonPropertiesArray();
+		} else if (source.equalsIgnoreCase("DefensePanel")) {
+			existingMacroList = MapTool.getCampaign().getDefenseMacroButtonPropertiesArray();
 		} else if (source.equalsIgnoreCase("GlobalPanel")) {
 			existingMacroList = MacroButtonPrefs.getButtonProperties();
 		} else if (token != null) {

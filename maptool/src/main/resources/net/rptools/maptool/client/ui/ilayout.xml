@@ -180,5 +180,53 @@
 	tabTitle="Initiative" title="Initiative"
 	undockedBounds="10; 10; 150; 200"/>
     </DockableFrames>
+
+	<DockableFrame autohidable="true" autohide="false"
+				 autohideHeight="200" autohideShowing="false" autohideWhenActive="false"
+				 autohideWidth="200" availableButtons="15" defaultCloseAction="0"
+				 defaultEscapeAction="0" dockable="true" docked="true" dockedHeight="200"
+				 dockedWidth="200" floatable="true" floated="false" hidable="true"
+				 hidden="false" initIndex="10" initMode="4" initSide="4" key="GENERIC"
+				 maximizable="true" maximized="false" preferredAutohideSide="-1"
+				 preferredSize="150; 200" rearrangable="true" showContextMenu="true"
+				 showGripper="false" showTitleBar="true" sideDockAllowed="true"
+				 sideTitle="Dice/Misc" slidingAutohide="true" tabDockAllowed="true"
+				 tabTitle="Dice/Misc" title="Dice/Misc" undockedBounds="10; 10; 150; 200" />
+
+	<DockableFrame autohidable="true" autohide="false"
+				 autohideHeight="200" autohideShowing="false" autohideWhenActive="false"
+				 autohideWidth="200" availableButtons="15" defaultCloseAction="0"
+				 defaultEscapeAction="0" dockable="true" docked="true" dockedHeight="200"
+				 dockedWidth="200" floatable="true" floated="false" hidable="true"
+				 hidden="true" initIndex="11" initMode="4" initSide="4" key="SKILLS"
+				 maximizable="true" maximized="false" preferredAutohideSide="-1"
+				 preferredSize="230; 400" rearrangable="true" showContextMenu="true"
+				 showGripper="false" showTitleBar="true" sideDockAllowed="true"
+				 sideTitle="Skills" slidingAutohide="true" tabDockAllowed="true"
+				 tabTitle="Skills" title="Skills" undockedBounds="10; 10; 150; 200" />
+
+	<DockableFrame autohidable="true" autohide="false"
+				 autohideHeight="200" autohideShowing="false" autohideWhenActive="false"
+				 autohideWidth="200" availableButtons="15" defaultCloseAction="0"
+				 defaultEscapeAction="0" dockable="true" docked="true" dockedHeight="200"
+				 dockedWidth="200" floatable="true" floated="false" hidable="true"
+				 hidden="true" initIndex="12" initMode="4" initSide="4" key="OFFENSE"
+				 maximizable="true" maximized="false" preferredAutohideSide="-1"
+				 preferredSize="150; 200" rearrangable="true" showContextMenu="true"
+				 showGripper="false" showTitleBar="true" sideDockAllowed="true"
+				 sideTitle="Offense" slidingAutohide="true" tabDockAllowed="true"
+				 tabTitle="Offense" title="Offense" undockedBounds="10; 10; 150; 200" />
+
+	<DockableFrame autohidable="true" autohide="false"
+				 autohideHeight="200" autohideShowing="false" autohideWhenActive="false"
+				 autohideWidth="200" availableButtons="15" defaultCloseAction="0"
+				 defaultEscapeAction="0" dockable="true" docked="true" dockedHeight="200"
+				 dockedWidth="200" floatable="true" floated="false" hidable="true"
+				 hidden="true" initIndex="13" initMode="4" initSide="4" key="DEFENSE"
+				 maximizable="true" maximized="false" preferredAutohideSide="-1"
+				 preferredSize="150; 200" rearrangable="true" showContextMenu="true"
+				 showGripper="false" showTitleBar="true" sideDockAllowed="true"
+				 sideTitle="Defense" slidingAutohide="true" tabDockAllowed="true"
+				 tabTitle="Defense" title="Defense" undockedBounds="10; 10; 150; 200" />
   </DockingManager>
 </Managers>

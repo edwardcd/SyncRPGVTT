@@ -20,7 +20,7 @@ import net.tsc.servicediscovery.ServiceGroup;
 
 public class AppConstants {
 
-	public static final String APP_NAME = "MapTool";
+	public static final String APP_NAME = "SyncRPG VTT";
 
 	public static final File UNZIP_DIR = AppUtil.getAppHome("resource");
 
@@ -55,4 +55,5 @@ public class AppConstants {
 	public static final String MACRO_FILE_EXTENSION = ".mtmacro";
 	public static final String MACROSET_FILE_EXTENSION = ".mtmacset";
 	public static final String TABLE_FILE_EXTENSION = ".mttable";
+	public static final String PHP_FILE_EXTENSION = ".php";
 }

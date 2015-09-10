@@ -123,6 +123,10 @@ public class TokenPopupMenu extends AbstractTokenPopupMenu {
 		add(new JSeparator());
 
 		add(new RevertLastMoveAction());
+
+		add(new JSeparator());
+		add(new SyncAction());
+
 		add(new ShowPropertiesDialogAction());
 		addOwnedItem(new SaveAction());
 	}
