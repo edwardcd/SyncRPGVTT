@@ -1322,10 +1322,10 @@ public class MapTool {
 		// We wait until after we call initialize() so that the asset and image managers
 		// are configured.
 		Image img = null;
-		File logoFile = new File(AppUtil.getAppHome("config"), "maptool-dock-icon.png");
+		File logoFile = new File(AppUtil.getAppHome("config"), "syncrpg-128px.png");
 		URL logoURL = null;
 		try {
-			logoURL = new URL("http://www.rptools.net/images/logo/RPTools_Map_Logo.png");
+			logoURL = new URL("http://www.syncrpg.com/images/syncrpg_icon.png");
 		} catch (MalformedURLException e) {
 			showError("Attemping to form URL -- shouldn't happen as URL is hard-coded", e);
 		}
