@@ -318,7 +318,7 @@ public class MapToolFrame extends DefaultDockableHolder implements WindowListene
 			ioe.printStackTrace();
 		}
 		aboutDialog = new AboutDialog(this, logo, credits);
-		aboutDialog.setSize(354, 400);
+		aboutDialog.setSize(400, 400);
 
 		statusPanel = new StatusPanel();
 		statusPanel.addPanel(getCoordinateStatusBar());
