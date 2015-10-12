@@ -517,7 +517,8 @@ public class AppActions {
 		public void execute(ActionEvent e) {
 			Zone zone = MapTool.getFrame().getCurrentZoneRenderer().getZone();
 			String oldName = zone.getName();
-			if (oldName == null) oldName = "";
+			if (oldName == null)
+				oldName = "";
 			String msg = I18N.getText("msg.confirm.renameMap", oldName);
 			String name = JOptionPane.showInputDialog(MapTool.getFrame(), msg, oldName);
 			if (name != null) {
@@ -1063,8 +1064,8 @@ public class AppActions {
 			String mesg = "Failed to paste token(s) with duplicate name(s): " + failedPaste;
 			TextMessage msg = TextMessage.gm(null, mesg);
 			MapTool.addMessage(msg);
-//			msg.setChannel(Channel.ME);
-//			MapTool.addMessage(msg);
+			//			msg.setChannel(Channel.ME);
+			//			MapTool.addMessage(msg);
 		}
 	}
 
@@ -1076,7 +1077,7 @@ public class AppActions {
 				long start = System.currentTimeMillis();
 
 				String characterID = (String) token.getProperty("SyncRPG_Character_ID");
-				if(characterID == null || characterID.isEmpty()) {
+				if (characterID == null || characterID.isEmpty()) {
 					MapTool.addLocalMessage("<font color='#FF0000'><b>ERROR: You are attempting to sync, but there is no characterID set on this Token.</b></font>");
 					return;
 				}
@@ -1095,7 +1096,7 @@ public class AppActions {
 
 					JSONObject jsonObject = (JSONObject) JSONSerializer.toJSON(contents);
 
-					if(jsonObject.has("error")) {
+					if (jsonObject.has("error")) {
 						String error = jsonObject.getString("error");
 						MapTool.addLocalMessage("<font color='#FF0000'><b>ERROR: " + error + "</b></font>");
 						return;
@@ -1104,18 +1105,18 @@ public class AppActions {
 					JSONObject properties = jsonObject.getJSONObject("properties");
 					Iterator itr = properties.keys();
 
-					while(itr.hasNext()) {
+					while (itr.hasNext()) {
 						String key = (String) itr.next();
 						String val = properties.getString(key);
 
-						if(key.equalsIgnoreCase("size")) {
+						if (key.equalsIgnoreCase("size")) {
 
 							ZoneRenderer renderer = MapTool.getFrame().getCurrentZoneRenderer();
 
 							Grid grid = renderer.getZone().getGrid();
 							for (TokenFootprint footprint : grid.getFootprints()) {
-								if(footprint.getName().equalsIgnoreCase(val)
-								   || footprint.getName().startsWith(val.substring(0, 1).toUpperCase())) {
+								if (footprint.getName().equalsIgnoreCase(val)
+										|| footprint.getName().startsWith(val.substring(0, 1).toUpperCase())) {
 
 									token.setFootprint(renderer.getZone().getGrid(), footprint);
 									token.setSnapToScale(true);
@@ -1126,20 +1127,19 @@ public class AppActions {
 								}
 
 							}
-						}
-						else {
+						} else {
 							token.setProperty(key, val);
 						}
 					}
 
-					if(jsonObject.has("macros")) {
+					if (jsonObject.has("macros")) {
 						token.deleteAllMacros(true);
 
 						JSONObject macros = jsonObject.getJSONObject("macros");
 						List<String> addedMacroNames = new ArrayList<String>();
 						itr = macros.keys();
 
-						while(itr.hasNext()) {
+						while (itr.hasNext()) {
 							String name = (String) itr.next();
 							JSONObject macro = macros.getJSONObject(name);
 
@@ -1155,21 +1155,19 @@ public class AppActions {
 								boolean includeLabel = macro.getBoolean("includeLabel");
 								boolean commonMacro = macro.getBoolean("commonMacro");
 
-								if(!addedMacroNames.contains(name)) {
+								if (!addedMacroNames.contains(name)) {
 									token.addMacro(group, name, command, toolTip, bgColor, fontColor, fontSize, applyToTokens, allowPlayerEdits, includeLabel, commonMacro);
 									token.refreshMacros();
 									addedMacroNames.add(name);
 								}
-							}
-							catch (JSONException e) {
+							} catch (JSONException e) {
 								System.err.println("JSONException with macro '" + name + "', skipping this macro...");
 								e.printStackTrace();
 							}
 						}
 					}
 
-				}
-				catch(Exception e) {
+				} catch (Exception e) {
 					e.printStackTrace();
 				}
 
@@ -1191,7 +1189,7 @@ public class AppActions {
 	 * @param tokenSet
 	 */
 	public static final void syncTokens(Zone zone, Set<GUID> tokenSet) {
-		if(!tokenSet.isEmpty()) {
+		if (!tokenSet.isEmpty()) {
 			for (GUID tokenGUID : tokenSet) {
 				Token token = zone.getToken(tokenGUID);
 
@@ -1979,7 +1977,8 @@ public class AppActions {
 					boolean useIF = serverProps.getUseIndividualViews() && serverProps.getUseIndividualFOW();
 					policy.setUseIndividualFOW(useIF);
 
-					ServerConfig config = new ServerConfig(serverProps.getUsername(), serverProps.getGMPassword(), serverProps.getPlayerPassword(), serverProps.getPort(), serverProps.getRPToolsName());
+					ServerConfig config = new ServerConfig(serverProps.getUsername(), serverProps.getGMPassword(), serverProps.getPlayerPassword(), serverProps.getPort(),
+							serverProps.getRPToolsName());
 
 					// Use the existing campaign
 					Campaign campaign = MapTool.getCampaign();
@@ -1995,7 +1994,7 @@ public class AppActions {
 						}
 						// Right now set this is set to whatever the last server settings were.  If we wanted to turn it on and
 						// leave it turned on, the line would change to:
-//						campaign.setHasUsedFogToolbar(useIF || campaign.hasUsedFogToolbar());
+						//						campaign.setHasUsedFogToolbar(useIF || campaign.hasUsedFogToolbar());
 						campaign.setHasUsedFogToolbar(useIF);
 
 						// Make a copy of the campaign since we don't coordinate local changes well ... yet
@@ -2222,8 +2221,8 @@ public class AppActions {
 						// Load
 						final PersistedCampaign campaign = PersistenceUtil.loadCampaign(campaignFile);
 						if (campaign != null) {
-//							current = MapTool.getFrame().getCurrentZoneRenderer();
-//							MapTool.getFrame().setCurrentZoneRenderer(null);
+							//							current = MapTool.getFrame().getCurrentZoneRenderer();
+							//							MapTool.getFrame().setCurrentZoneRenderer(null);
 							ImageManager.flush(); // Clear out the old campaign's images
 
 							AppState.setCampaignFile(campaignFile);
@@ -2234,16 +2233,16 @@ public class AppActions {
 							 * Bypass the serialization when we are hosting the
 							 * server.
 							 */
-//							if (MapTool.isHostingServer() || MapTool.isPersonalServer()) {
-//								/*
-//								 * TODO: This optimization doesn't work since
-//								 * the player name isn't the right thing to use
-//								 * to exclude this thread...
-//								 */
-//								String playerName = MapTool.getPlayer().getName();
-//								String command = ServerCommand.COMMAND.setCampaign.name();
-//								MapTool.getServer().getMethodHandler().handleMethod(playerName, command, new Object[] { campaign.campaign });
-//							} else
+							//							if (MapTool.isHostingServer() || MapTool.isPersonalServer()) {
+							//								/*
+							//								 * TODO: This optimization doesn't work since
+							//								 * the player name isn't the right thing to use
+							//								 * to exclude this thread...
+							//								 */
+							//								String playerName = MapTool.getPlayer().getName();
+							//								String command = ServerCommand.COMMAND.setCampaign.name();
+							//								MapTool.getServer().getMethodHandler().handleMethod(playerName, command, new Object[] { campaign.campaign });
+							//							} else
 							{
 								MapTool.serverCommand().setCampaign(campaign.campaign);
 							}
@@ -2465,7 +2464,7 @@ public class AppActions {
 
 		@Override
 		public boolean isAvailable() {
-//			return MapTool.isHostingServer() || MapTool.isPersonalServer();
+			//			return MapTool.isHostingServer() || MapTool.isPersonalServer();
 			// I'd like to be able to use this instead as it's less restrictive, but it's safer to disallow for now.
 			return MapTool.isHostingServer() || (MapTool.getPlayer() != null && MapTool.getPlayer().isGM());
 		}
@@ -2479,7 +2478,7 @@ public class AppActions {
 				isRemoteGM = true;
 				if (isRemoteGM) {
 					// Returns true if they select OK and false otherwise
-//					setSeenWarning(MapTool.confirm("action.loadMap.warning"));
+					//					setSeenWarning(MapTool.confirm("action.loadMap.warning"));
 					ImageIcon icon = null;
 					try {
 						Image img = ImageUtil.getImage("net/rptools/maptool/client/image/book_open.png");
@@ -2496,8 +2495,7 @@ public class AppActions {
 							I18N.getText("msg.title.messageDialogConfirm"),
 							JOptionPane.DEFAULT_OPTION,
 							JOptionPane.WARNING_MESSAGE, null,
-							options, options[2]
-							);
+							options, options[2]);
 					if (result == 1)
 						setSeenWarning(true); // Yes
 					else {
@@ -2576,7 +2574,7 @@ public class AppActions {
 						if (map != null) {
 							AppPreferences.setLoadDir(mapFile.getParentFile());
 							if ((map.zone.getExposedArea() != null && !map.zone.getExposedArea().isEmpty()) ||
-								(map.zone.getExposedAreaMetaData() != null && !map.zone.getExposedAreaMetaData().isEmpty())) {
+									(map.zone.getExposedAreaMetaData() != null && !map.zone.getExposedAreaMetaData().isEmpty())) {
 								boolean ok = MapTool.confirm("<html>Map contains exposed areas of fog.<br>Do you want to reset all of the fog?");
 								if (ok == true) {
 									// This fires a ModelChangeEvent, but that shouldn't matter
@@ -2601,7 +2599,7 @@ public class AppActions {
 						}
 					} finally {
 						MapTool.getFrame().hideGlassPane();
-						if(deleteFile) {	// jmoskie: TODO: ensure this works.
+						if (deleteFile) { // jmoskie: TODO: ensure this works.
 							mapFile.delete();
 						}
 					}
@@ -2786,7 +2784,7 @@ public class AppActions {
 					newMapDialog.setZone(zone);
 					newMapDialog.setVisible(true);
 					// Too many things can change to send them 1 by 1 to the client... just resend the zone
-//					MapTool.serverCommand().setBoard(zone.getId(), zone.getMapAssetId(), zone.getBoardX(), zone.getBoardY());
+					//					MapTool.serverCommand().setBoard(zone.getId(), zone.getMapAssetId(), zone.getBoardX(), zone.getBoardY());
 					MapTool.serverCommand().removeZone(zone.getId());
 					MapTool.serverCommand().putZone(zone);
 					MapTool.getFrame().getCurrentZoneRenderer().flush();

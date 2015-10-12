@@ -334,8 +334,8 @@ public class MapToolFrame extends DefaultDockableHolder implements WindowListene
 
 		zoneRendererPanel = new JPanel(new PositionalLayout(5));
 		zoneRendererPanel.setBackground(Color.black);
-//		zoneRendererPanel.add(zoneMiniMapPanel, PositionalLayout.Position.SE);
-//		zoneRendererPanel.add(getChatTypingLabel(), PositionalLayout.Position.NW);
+		//		zoneRendererPanel.add(zoneMiniMapPanel, PositionalLayout.Position.SE);
+		//		zoneRendererPanel.add(getChatTypingLabel(), PositionalLayout.Position.NW);
 		zoneRendererPanel.add(getChatTypingPanel(), PositionalLayout.Position.NW);
 		zoneRendererPanel.add(getChatActionLabel(), PositionalLayout.Position.SW);
 
@@ -364,7 +364,7 @@ public class MapToolFrame extends DefaultDockableHolder implements WindowListene
 		glassPaneComposite.add(dragImageGlassPane, constraints);
 
 		setGlassPane(glassPane);
-//		setGlassPane(glassPaneComposite);
+		//		setGlassPane(glassPaneComposite);
 
 		glassPaneComposite.setVisible(true);
 
@@ -545,9 +545,9 @@ public class MapToolFrame extends DefaultDockableHolder implements WindowListene
 		frameMap.put(MTFrame.IMPERSONATED, createDockingFrame(MTFrame.IMPERSONATED, impersonate, new ImageIcon(AppStyle.impersonatePanelImage)));
 
 		JScrollPane generic = scrollPaneFactory(genericPanel);
-		JScrollPane skills  = scrollPaneFactory(skillsPanel);
-		JScrollPane offense  = scrollPaneFactory(offensePanel);
-		JScrollPane defense  = scrollPaneFactory(defensePanel);
+		JScrollPane skills = scrollPaneFactory(skillsPanel);
+		JScrollPane offense = scrollPaneFactory(offensePanel);
+		JScrollPane defense = scrollPaneFactory(defensePanel);
 
 		frameMap.put(MTFrame.GENERIC, createDockingFrame(MTFrame.GENERIC, generic, new ImageIcon(AppStyle.globalPanelImage)));
 		frameMap.put(MTFrame.SKILLS, createDockingFrame(MTFrame.SKILLS, skills, new ImageIcon(AppStyle.globalPanelImage)));
@@ -755,8 +755,8 @@ public class MapToolFrame extends DefaultDockableHolder implements WindowListene
 	public void showFilledGlassPane(JComponent component) {
 		glassPane.setLayout(new GridLayout());
 		glassPane.add(component);
-//		glassPane.setActionMap(null);
-//		glassPane.setInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT, null);
+		//		glassPane.setActionMap(null);
+		//		glassPane.setInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT, null);
 		glassPane.setVisible(true);
 	}
 
@@ -975,18 +975,18 @@ public class MapToolFrame extends DefaultDockableHolder implements WindowListene
 			@Override
 			public void mouseReleased(MouseEvent e) {
 				// TODO use for real popup logic
-//				if (SwingUtilities.isLeftMouseButton(e)) {
-//					if (e.getClickCount() == 2) {
-//
-//						List<Object> idList = panel.getSelectedIds();
-//						if (idList == null || idList.size() == 0) {
-//							return;
-//						}
-//
-//						final int index = (Integer) idList.get(0);
-//						createZone(panel.getAsset(index));
-//					}
-//				}
+				//				if (SwingUtilities.isLeftMouseButton(e)) {
+				//					if (e.getClickCount() == 2) {
+				//
+				//						List<Object> idList = panel.getSelectedIds();
+				//						if (idList == null || idList.size() == 0) {
+				//							return;
+				//						}
+				//
+				//						final int index = (Integer) idList.get(0);
+				//						createZone(panel.getAsset(index));
+				//					}
+				//				}
 				if (SwingUtilities.isRightMouseButton(e) && MapTool.getPlayer().isGM()) {
 					List<Object> idList = panel.getSelectedIds();
 					if (idList == null || idList.size() == 0) {
@@ -1149,7 +1149,7 @@ public class MapToolFrame extends DefaultDockableHolder implements WindowListene
 			ImageManager.flush(renderer.getZone().getAllAssetIds());
 		} else {
 			ImageManager.flush();
-//			zoneRendererList.remove(currentRenderer);
+			//			zoneRendererList.remove(currentRenderer);
 		}
 		// Handle new renderers
 		// TODO: should this be here ?
@@ -1283,14 +1283,14 @@ public class MapToolFrame extends DefaultDockableHolder implements WindowListene
 			return;
 		}
 		final Zone zone = (Zone) evt.getNewValue();
-//		AssetAvailableListener listener = new AssetAvailableListener() {
-//			public void assetAvailable(net.rptools.lib.MD5Key key) {
-//				ZoneRenderer renderer = getCurrentZoneRenderer();
-//				if (renderer.getZone() == zone) {
-//					ImageManager.getImage(key, renderer);
-//				}
-//			}
-//		};
+		//		AssetAvailableListener listener = new AssetAvailableListener() {
+		//			public void assetAvailable(net.rptools.lib.MD5Key key) {
+		//				ZoneRenderer renderer = getCurrentZoneRenderer();
+		//				if (renderer.getZone() == zone) {
+		//					ImageManager.getImage(key, renderer);
+		//				}
+		//			}
+		//		};
 		// Let's add all the assets, starting with the backgrounds
 		for (Token token : zone.getBackgroundStamps()) {
 			MD5Key key = token.getImageAssetId();
@@ -1332,7 +1332,7 @@ public class MapToolFrame extends DefaultDockableHolder implements WindowListene
 		if (AppPreferences.getSaveReminder()) {
 			if (MapTool.getPlayer().isGM()) {
 				int result = MapTool.confirmImpl(I18N.getText("msg.title.saveCampaign"), JOptionPane.YES_NO_CANCEL_OPTION, "msg.confirm.saveCampaign", (Object[]) null);
-//				int result = JOptionPane.showConfirmDialog(MapTool.getFrame(), I18N.getText("msg.confirm.saveCampaign"), I18N.getText("msg.title.saveCampaign"), JOptionPane.YES_NO_CANCEL_OPTION);
+				//				int result = JOptionPane.showConfirmDialog(MapTool.getFrame(), I18N.getText("msg.confirm.saveCampaign"), I18N.getText("msg.title.saveCampaign"), JOptionPane.YES_NO_CANCEL_OPTION);
 
 				if (result == JOptionPane.CANCEL_OPTION || result == JOptionPane.CLOSED_OPTION) {
 					return;
@@ -1412,7 +1412,7 @@ public class MapToolFrame extends DefaultDockableHolder implements WindowListene
 		 * hotkeys set aside for macros; unless someone modifies the
 		 * accelerators in the i18n file. Commenting it out.
 		 */
-//		updateKeyStrokes(menuBar);
+		//		updateKeyStrokes(menuBar);
 
 		for (MTFrame frame : frameMap.keySet()) {
 			updateKeyStrokes(frameMap.get(frame));

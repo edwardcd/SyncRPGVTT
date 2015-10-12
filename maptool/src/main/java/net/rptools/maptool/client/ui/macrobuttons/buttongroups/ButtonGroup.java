@@ -1,12 +1,12 @@
 /*
- *  This software copyright by various authors including the RPTools.net
- *  development team, and licensed under the LGPL Version 3 or, at your
- *  option, any later version.
+ * This software copyright by various authors including the RPTools.net
+ * development team, and licensed under the LGPL Version 3 or, at your option,
+ * any later version.
  *
- *  Portions of this software were originally covered under the Apache
- *  Software License, Version 1.1 or Version 2.0.
+ * Portions of this software were originally covered under the Apache Software
+ * License, Version 1.1 or Version 2.0.
  *
- *  See the file LICENSE elsewhere in this distribution for license details.
+ * See the file LICENSE elsewhere in this distribution for license details.
  */
 
 package net.rptools.maptool.client.ui.macrobuttons.buttongroups;
@@ -55,27 +55,26 @@ public class ButtonGroup extends AbstractButtonGroup {
 		drawButtons();
 	}
 
-	protected void drawButtons(){
+	protected void drawButtons() {
 		List<MacroButtonProperties> propertiesList = getPropertiesList();
 		String panelClass = getPanelClass();
 		setOpaque(false);
-		if (getGroupLabel().equals("")){ 
-			setBorder(new ThumbnailedBorder(null, null));  // no label or icon, just solid border
+		if (getGroupLabel().equals("")) {
+			setBorder(new ThumbnailedBorder(null, null)); // no label or icon, just solid border
 		} else {
 			setBorder(new ThumbnailedBorder(null, getGroupLabel()));
 		}
-		if (propertiesList.isEmpty()){
-			add(new JLabel(I18N.getText("component.areaGroup.macro.noMacros")));			
+		if (propertiesList.isEmpty()) {
+			add(new JLabel(I18N.getText("component.areaGroup.macro.noMacros")));
 		} else {
 			Collections.sort(propertiesList);
 			for (MacroButtonProperties prop : propertiesList) {
 				if (panelClass.equals("GlobalPanel")
-				   || panelClass.equals("CampaignPanel")
-				   || panelClass.equals("GenericPanel")
-				   || panelClass.equals("SkillsPanel")
-				   || panelClass.equals("OffensePanel")
-				   || panelClass.equals("DefensePanel")
-					) {
+						|| panelClass.equals("CampaignPanel")
+						|| panelClass.equals("GenericPanel")
+						|| panelClass.equals("SkillsPanel")
+						|| panelClass.equals("OffensePanel")
+						|| panelClass.equals("DefensePanel")) {
 					add(new MacroButton(prop, this));
 				} else if (panelClass.equals("ImpersonatePanel") || panelClass.equals("SelectionPanel")) {
 					add(new MacroButton(prop, this, getToken()));
@@ -99,7 +98,7 @@ public class ButtonGroup extends AbstractButtonGroup {
 
 			event.acceptDrop(event.getDropAction());
 
-			if(event.isLocalTransfer()) {
+			if (event.isLocalTransfer()) {
 				data = (TransferData) t.getTransferData(TransferableMacroButton.macroButtonFlavor);
 
 				if (data == null) {
@@ -107,23 +106,22 @@ public class ButtonGroup extends AbstractButtonGroup {
 				}
 				// create a temporary MacroButtonProperties object to hold the transferred data until we figure out where it goes
 				macroButtons.add(new MacroButtonProperties(
-								data.index,
-								data.colorKey,
-								MacroButtonHotKeyManager.HOTKEYS[0], // don't reuse the hot key
-								data.command,
-								data.label,
-								"",
-								data.sortby,
-								data.autoExecute,
-								data.includeLabel,
-								data.applyToTokens,
-								data.fontColorKey,
-								data.fontSize,
-								data.minWidth,
-								data.maxWidth,
-								data.toolTip));
-			}
-			else {
+						data.index,
+						data.colorKey,
+						MacroButtonHotKeyManager.HOTKEYS[0], // don't reuse the hot key
+						data.command,
+						data.label,
+						"",
+						data.sortby,
+						data.autoExecute,
+						data.includeLabel,
+						data.applyToTokens,
+						data.fontColorKey,
+						data.fontSize,
+						data.minWidth,
+						data.maxWidth,
+						data.toolTip));
+			} else {
 				List<Object> assets = TransferableHelper.getAsset(t);
 				if (assets != null) {
 					for (Object working : assets) {
@@ -134,34 +132,34 @@ public class ButtonGroup extends AbstractButtonGroup {
 				}
 			}
 
-			if(!macroButtons.isEmpty()) {
-				for(MacroButtonProperties macro : macroButtons) {
+			if (!macroButtons.isEmpty()) {
+				for (MacroButtonProperties macro : macroButtons) {
 					if (panelClass.equals("GlobalPanel")
-						|| panelClass.equals("CampaignPanel")
-						|| panelClass.equals("GenericPanel")
-						|| panelClass.equals("SkillsPanel")
-						|| panelClass.equals("OffensePanel")
-						|| panelClass.equals("DefensePanel")) {
+							|| panelClass.equals("CampaignPanel")
+							|| panelClass.equals("GenericPanel")
+							|| panelClass.equals("SkillsPanel")
+							|| panelClass.equals("OffensePanel")
+							|| panelClass.equals("DefensePanel")) {
 						// jmoskie: TODO: check the group. if it's set and getMacroGroup isn't, then preserve it.
-						if(macro.getGroup().isEmpty() && !getMacroGroup().isEmpty()) {
+						if (macro.getGroup().isEmpty() && !getMacroGroup().isEmpty()) {
 							macro.setGroup(getMacroGroup());
 						}
 
-						if (!macro.isDuplicateMacro(panelClass, null)){
+						if (!macro.isDuplicateMacro(panelClass, null)) {
 							new MacroButtonProperties(panelClass, MacroButtonPrefs.getNextIndex(), macro);
 						}
-					} else if(panelClass.equals("SelectionPanel")) {
-						if(getArea() != null) {
-							if(getArea().getGroupLabel().equals(I18N.getText("component.areaGroup.macro.commonMacros"))) {
-								macro.setGroup(getMacroGroup());  // assign the group you are dropping it into, rather than the original
-								for(Token nextToken : MapTool.getFrame().getCurrentZoneRenderer().getSelectedTokensList()) {
-									if(!macro.isDuplicateMacro("Token", nextToken)) {
+					} else if (panelClass.equals("SelectionPanel")) {
+						if (getArea() != null) {
+							if (getArea().getGroupLabel().equals(I18N.getText("component.areaGroup.macro.commonMacros"))) {
+								macro.setGroup(getMacroGroup()); // assign the group you are dropping it into, rather than the original
+								for (Token nextToken : MapTool.getFrame().getCurrentZoneRenderer().getSelectedTokensList()) {
+									if (!macro.isDuplicateMacro("Token", nextToken)) {
 										new MacroButtonProperties(nextToken, nextToken.getMacroNextIndex(), macro);
 									}
 								}
-							} else if (getToken() != null){
+							} else if (getToken() != null) {
 								// this is a token group, copy macro to token
-								macro.setGroup(getMacroGroup());  // assign the group you are dropping it into, rather than the original
+								macro.setGroup(getMacroGroup()); // assign the group you are dropping it into, rather than the original
 								Token token = getToken();
 								if (!macro.isDuplicateMacro("Token", token)) {
 									new MacroButtonProperties(token, token.getMacroNextIndex(), macro);
@@ -170,7 +168,7 @@ public class ButtonGroup extends AbstractButtonGroup {
 						}
 					} else if (getToken() != null) {
 						// this is a token group, copy macro to token
-						macro.setGroup(getMacroGroup());  // assign the group you are dropping it into, rather than the original
+						macro.setGroup(getMacroGroup()); // assign the group you are dropping it into, rather than the original
 						Token token = getToken();
 						if (!macro.isDuplicateMacro("Token", token)) {
 							new MacroButtonProperties(token, token.getMacroNextIndex(), macro);
@@ -181,8 +179,7 @@ public class ButtonGroup extends AbstractButtonGroup {
 					}
 				}
 				event.dropComplete(true);
-			}
-			else {
+			} else {
 				event.dropComplete(false);
 			}
 		} catch (Exception e) {
@@ -190,12 +187,12 @@ public class ButtonGroup extends AbstractButtonGroup {
 			event.dropComplete(false);
 		}
 	}
-	
+
 	public Insets getInsets() {
-		if (getGroupLabel().equals("")){
-			return new Insets(3,3,3,0);
+		if (getGroupLabel().equals("")) {
+			return new Insets(3, 3, 3, 0);
 		} else {
-			return new Insets(16,3,3,0);
+			return new Insets(16, 3, 3, 0);
 		}
 	}
 
@@ -204,46 +201,14 @@ public class ButtonGroup extends AbstractButtonGroup {
 		FlowLayout layout = (FlowLayout) getLayout();
 		Insets insets = getInsets();
 		// This isn't exact, but hopefully it's close enough
-		int availableWidth = getPanel().getAvailableWidth() - insets.left - insets.right -10;
+		int availableWidth = getPanel().getAvailableWidth() - insets.left - insets.right - 10;
 		int height = insets.top + insets.bottom + layout.getVgap();
 		int rowHeight = 0;
 		int rowWidth = insets.left + layout.getHgap() + insets.right;
 		for (Component c : getComponents()) {
 			Dimension cSize = c.getPreferredSize();
 			if (rowWidth + cSize.width + layout.getHgap() - 5 > availableWidth && rowWidth > 0) {
-				height += rowHeight + layout.getVgap(); 
-				rowHeight = 0;
-				rowWidth = insets.left + layout.getHgap() + insets.right;
-			}
-			rowWidth += cSize.width + layout.getHgap();
-			rowHeight = Math.max(cSize.height, rowHeight);
-		}
-		height += rowHeight;		
-		Dimension prefSize = new Dimension(availableWidth, height);
-		return prefSize;
-	}
-
-/* The following version of getPreferredSize allows multiple small groups to flow on one row.  
- * However it has some glitches in calculating sizes, and makes it harder to find a spot to 
- * right-click/drop things on since it doesn't extend the full width of the panel.  Not using
- * until the kinks are worked out.
-	@Override
-	public Dimension getPreferredSize() {
-		FlowLayout layout = (FlowLayout) getLayout();
-		Insets insets = getInsets();
-		int availableWidth = getPanel().getAvailableWidth() - insets.left - insets.right;
-		// This isn't exact, but hopefully it's close enough
-		int height = insets.top + insets.bottom + layout.getVgap();
-		int width = 0;
-		int rowHeight = 0;
-		int rowWidth = insets.left + layout.getHgap() + insets.right;
-		int maxRowWidth = 0;
-		for (Component c : getComponents()) {
-			Dimension cSize = c.getPreferredSize();
-			if (rowWidth + cSize.width + layout.getHgap() + 15 > availableWidth && rowWidth > 0) {
-				maxRowWidth = Math.max(maxRowWidth, rowWidth);
-				height += rowHeight + layout.getVgap(); 
-				System.out.println("***** "+getPanelClass()+":"+getGroupClass()+":"+getGroupLabel()+" New Row, Size: "+maxRowWidth+", "+height);
+				height += rowHeight + layout.getVgap();
 				rowHeight = 0;
 				rowWidth = insets.left + layout.getHgap() + insets.right;
 			}
@@ -251,19 +216,51 @@ public class ButtonGroup extends AbstractButtonGroup {
 			rowHeight = Math.max(cSize.height, rowHeight);
 		}
 		height += rowHeight;
-		maxRowWidth = Math.max(maxRowWidth, rowWidth);
-		System.out.println("***** "+getPanelClass()+":"+getGroupClass()+":"+getGroupLabel()+" New Row, Size: "+maxRowWidth+", "+height);
-		width = maxRowWidth; // always use the full width for the general area
-		Dimension prefSize = new Dimension(width, height);
-		System.out.println("***** "+getPanelClass()+":"+getGroupClass()+":"+getGroupLabel()+" PREFERRED SIZE: "+width+", "+height);
+		Dimension prefSize = new Dimension(availableWidth, height);
 		return prefSize;
 	}
-*/
-	
+
+	/* The following version of getPreferredSize allows multiple small groups to flow on one row.  
+	 * However it has some glitches in calculating sizes, and makes it harder to find a spot to 
+	 * right-click/drop things on since it doesn't extend the full width of the panel.  Not using
+	 * until the kinks are worked out.
+		@Override
+		public Dimension getPreferredSize() {
+			FlowLayout layout = (FlowLayout) getLayout();
+			Insets insets = getInsets();
+			int availableWidth = getPanel().getAvailableWidth() - insets.left - insets.right;
+			// This isn't exact, but hopefully it's close enough
+			int height = insets.top + insets.bottom + layout.getVgap();
+			int width = 0;
+			int rowHeight = 0;
+			int rowWidth = insets.left + layout.getHgap() + insets.right;
+			int maxRowWidth = 0;
+			for (Component c : getComponents()) {
+				Dimension cSize = c.getPreferredSize();
+				if (rowWidth + cSize.width + layout.getHgap() + 15 > availableWidth && rowWidth > 0) {
+					maxRowWidth = Math.max(maxRowWidth, rowWidth);
+					height += rowHeight + layout.getVgap(); 
+					System.out.println("***** "+getPanelClass()+":"+getGroupClass()+":"+getGroupLabel()+" New Row, Size: "+maxRowWidth+", "+height);
+					rowHeight = 0;
+					rowWidth = insets.left + layout.getHgap() + insets.right;
+				}
+				rowWidth += cSize.width + layout.getHgap();
+				rowHeight = Math.max(cSize.height, rowHeight);
+			}
+			height += rowHeight;
+			maxRowWidth = Math.max(maxRowWidth, rowWidth);
+			System.out.println("***** "+getPanelClass()+":"+getGroupClass()+":"+getGroupLabel()+" New Row, Size: "+maxRowWidth+", "+height);
+			width = maxRowWidth; // always use the full width for the general area
+			Dimension prefSize = new Dimension(width, height);
+			System.out.println("***** "+getPanelClass()+":"+getGroupClass()+":"+getGroupLabel()+" PREFERRED SIZE: "+width+", "+height);
+			return prefSize;
+		}
+	*/
+
 	public List<MacroButton> getButtons() {
 		List<MacroButton> myButtons = new ArrayList<MacroButton>();
-		for(int buttonCount = 0; buttonCount < this.getComponentCount(); buttonCount++) {
-			if(this.getComponent(buttonCount).getClass() == MacroButton.class) {
+		for (int buttonCount = 0; buttonCount < this.getComponentCount(); buttonCount++) {
+			if (this.getComponent(buttonCount).getClass() == MacroButton.class) {
 				myButtons.add((MacroButton) this.getComponent(buttonCount));
 			}
 		}
@@ -271,6 +268,7 @@ public class ButtonGroup extends AbstractButtonGroup {
 	}
 
 	public static boolean isMacroButtonGroupFile(String filename) {
-		return filename != null && (filename.toLowerCase().endsWith(AppConstants.MACROSET_FILE_EXTENSION) || filename.toLowerCase().endsWith(AppConstants.MACROSET_FILE_EXTENSION + AppConstants.PHP_FILE_EXTENSION));
+		return filename != null
+				&& (filename.toLowerCase().endsWith(AppConstants.MACROSET_FILE_EXTENSION) || filename.toLowerCase().endsWith(AppConstants.MACROSET_FILE_EXTENSION + AppConstants.PHP_FILE_EXTENSION));
 	}
 }

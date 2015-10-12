@@ -300,12 +300,12 @@ public class TransferableHelper extends TransferHandler {
 				// There's no reason to trap the individual exceptions when a single catch suffices.
 				if (log.isInfoEnabled())
 					log.info(s, e);
-//			} catch (URISyntaxException e) {				// Thrown by the URI constructor
-//				e.printStackTrace();
-//			} catch (IllegalArgumentException e) {	// Thrown by URI.toURL()
-//				e.printStackTrace();
-//			} catch (MalformedURLException e) {		// Thrown by URI.toURL()
-//				e.printStackTrace();
+				//			} catch (URISyntaxException e) {				// Thrown by the URI constructor
+				//				e.printStackTrace();
+				//			} catch (IllegalArgumentException e) {	// Thrown by URI.toURL()
+				//				e.printStackTrace();
+				//			} catch (MalformedURLException e) {		// Thrown by URI.toURL()
+				//				e.printStackTrace();
 			}
 		}
 		return list;
@@ -335,45 +335,45 @@ public class TransferableHelper extends TransferHandler {
 		return asset;
 	}
 
-//	private static Asset handleImage(Transferable transferable) throws IOException, UnsupportedFlavorException {
-//		String name = null;
-//		BufferedImage image = null;
-//		if (transferable.isDataFlavorSupported(URL_FLAVOR_PLAIN)) {
-//			try {
-//				String fname = (String) transferable.getTransferData(URL_FLAVOR_PLAIN);
-//				if (log.isDebugEnabled())
-//					log.debug("Transferable " + fname); //$NON-NLS-1$
-//				name = FileUtil.getNameWithoutExtension(fname);
-//
-//				File file;
-//				URL url = new URL(fname);
-//				try {
-//					URI uri = url.toURI(); // Should replace '%20' sequences and such
-//					file = new File(uri);
-//				} catch (URISyntaxException e) {
-//					file = new File(fname);
-//				}
-//				if (file.exists()) {
-//					if (log.isDebugEnabled())
-//						log.debug("Reading local file:  " + file); //$NON-NLS-1$
-//					image = ImageIO.read(file);
-//				} else {
-//					if (log.isDebugEnabled())
-//						log.debug("Reading remote URL:  " + url); //$NON-NLS-1$
-//					image = ImageIO.read(url);
-//				}
-//			} catch (Exception e) {
-//				MapTool.showError("TransferableHelper.error.urlFlavor", e); //$NON-NLS-1$
-//			}
-//		}
-//		if (image == null) {
-//			if (log.isDebugEnabled())
-//				log.debug("URL_FLAVOR_PLAIN didn't work; trying ImageTransferableHandler().getTransferObject()"); //$NON-NLS-1$
-//			image = (BufferedImage) new ImageTransferableHandler().getTransferObject(transferable);
-//		}
-//		Asset asset = new Asset(name, ImageUtil.imageToBytes(image));
-//		return asset;
-//	}
+	//	private static Asset handleImage(Transferable transferable) throws IOException, UnsupportedFlavorException {
+	//		String name = null;
+	//		BufferedImage image = null;
+	//		if (transferable.isDataFlavorSupported(URL_FLAVOR_PLAIN)) {
+	//			try {
+	//				String fname = (String) transferable.getTransferData(URL_FLAVOR_PLAIN);
+	//				if (log.isDebugEnabled())
+	//					log.debug("Transferable " + fname); //$NON-NLS-1$
+	//				name = FileUtil.getNameWithoutExtension(fname);
+	//
+	//				File file;
+	//				URL url = new URL(fname);
+	//				try {
+	//					URI uri = url.toURI(); // Should replace '%20' sequences and such
+	//					file = new File(uri);
+	//				} catch (URISyntaxException e) {
+	//					file = new File(fname);
+	//				}
+	//				if (file.exists()) {
+	//					if (log.isDebugEnabled())
+	//						log.debug("Reading local file:  " + file); //$NON-NLS-1$
+	//					image = ImageIO.read(file);
+	//				} else {
+	//					if (log.isDebugEnabled())
+	//						log.debug("Reading remote URL:  " + url); //$NON-NLS-1$
+	//					image = ImageIO.read(url);
+	//				}
+	//			} catch (Exception e) {
+	//				MapTool.showError("TransferableHelper.error.urlFlavor", e); //$NON-NLS-1$
+	//			}
+	//		}
+	//		if (image == null) {
+	//			if (log.isDebugEnabled())
+	//				log.debug("URL_FLAVOR_PLAIN didn't work; trying ImageTransferableHandler().getTransferObject()"); //$NON-NLS-1$
+	//			image = (BufferedImage) new ImageTransferableHandler().getTransferObject(transferable);
+	//		}
+	//		Asset asset = new Asset(name, ImageUtil.imageToBytes(image));
+	//		return asset;
+	//	}
 
 	private static List<Object> handleURLList(List<URL> list) throws Exception {
 		List<Object> assets = new ArrayList<Object>();
@@ -386,20 +386,17 @@ public class TransferableHelper extends TransferHandler {
 					// will strip out anything in the List that isn't an Asset anyway...
 					Token token = PersistenceUtil.loadToken(url);
 					assets.add(token);
-				}
-				else if(MapFunctions.isMapFile(url.getPath())) {
-					if(MapTool.getPlayer().isGM()) {
+				} else if (MapFunctions.isMapFile(url.getPath())) {
+					if (MapTool.getPlayer().isGM()) {
 						AppActions.loadMap(url);
-						assets.add(new PersistenceUtil.PersistedMap());	// empty map.
+						assets.add(new PersistenceUtil.PersistedMap()); // empty map.
 					}
-				}
-				else if(MacroButton.isMacroButtonFile(url.getPath())) {
+				} else if (MacroButton.isMacroButtonFile(url.getPath())) {
 					MacroButtonProperties macro = PersistenceUtil.loadMacro(url);
 					assets.add(macro);
-				}
-				else if(ButtonGroup.isMacroButtonGroupFile(url.getPath())) {
+				} else if (ButtonGroup.isMacroButtonGroupFile(url.getPath())) {
 					List<MacroButtonProperties> macroSet = PersistenceUtil.loadMacroSet(url);
-					for(MacroButtonProperties macro : macroSet) {
+					for (MacroButtonProperties macro : macroSet) {
 						assets.add(macro);
 					}
 				} else {
@@ -449,8 +446,8 @@ public class TransferableHelper extends TransferHandler {
 			if (tokens.size() != tokenMaps.size()) {
 				final int missingTokens = tokenMaps.size() - tokens.size();
 				final String message = I18N.getText("TransferableHelper.warning.tokensAddedAndExcluded", tokens.size(), missingTokens); //$NON-NLS-1$
-//				if (EventQueue.isDispatchThread())
-//					System.out.println("Yes, we are on the EDT already.");
+				//				if (EventQueue.isDispatchThread())
+				//					System.out.println("Yes, we are on the EDT already.");
 				SwingUtilities.invokeLater(new Runnable() {
 					public void run() {
 						MapTool.showWarning(message);
@@ -516,11 +513,11 @@ public class TransferableHelper extends TransferHandler {
 		// On OSX Java6, any data flavor that uses java.nio.ByteBuffer or an array of bytes
 		// appears to output the object to the console (via System.out?).  Geez, can't
 		// Apple even run a frakkin' grep against their code before releasing it?!
-//		PrintStream old = null;
-//		if (MapTool.MAC_OS_X) {
-//			old = System.out;
-//			setOnOff(null);
-//		}
+		//		PrintStream old = null;
+		//		if (MapTool.MAC_OS_X) {
+		//			old = System.out;
+		//			setOnOff(null);
+		//		}
 		for (DataFlavor flavor : t.getTransferDataFlavors()) {
 			Object result = null;
 			try {
@@ -532,7 +529,7 @@ public class TransferableHelper extends TransferHandler {
 				if (log.isDebugEnabled())
 					log.debug("Failed (IOE):  " + flavor.toString()); //$NON-NLS-1$
 			} catch (Exception e) {
-//				System.err.println(e);
+				//				System.err.println(e);
 			}
 			if (result != null) {
 				for (Class<?> type : validTypes) {
@@ -545,14 +542,14 @@ public class TransferableHelper extends TransferHandler {
 				}
 			}
 		}
-//		if (MapTool.MAC_OS_X)
-//			setOnOff(old);
+		//		if (MapTool.MAC_OS_X)
+		//			setOnOff(old);
 		return worked;
 	}
 
-//	private static void setOnOff(PrintStream old) {
-//		System.setOut(old);
-//	}
+	//	private static void setOnOff(PrintStream old) {
+	//		System.setOut(old);
+	//	}
 
 	private static final Class<?> validTypes[] = { java.lang.String.class, java.net.URL.class, java.util.List.class, java.awt.Image.class, };
 
@@ -577,23 +574,22 @@ public class TransferableHelper extends TransferHandler {
 		if (assets != null) {
 			tokens = new ArrayList<Token>(assets.size());
 			configureTokens = new ArrayList<Boolean>(assets.size());
-//			Zone zone = MapTool.getFrame().getCurrentZoneRenderer().getZone();
+			//			Zone zone = MapTool.getFrame().getCurrentZoneRenderer().getZone();
 			for (Object working : assets) {
 				if (working instanceof Asset) {
 					Asset asset = (Asset) working;
 					Token token = new Token(asset.getName(), asset.getId());
-//					token.setName(MapToolUtil.nextTokenId(zone, token));
+					//					token.setName(MapToolUtil.nextTokenId(zone, token));
 					tokens.add(token);
 					// A token from an image asset needs additional configuration.
 					configureTokens.add(true);
 				} else if (working instanceof Token) {
 					Token token = new Token((Token) working);
-//					token.setName(MapToolUtil.nextTokenId(zone, token));
+					//					token.setName(MapToolUtil.nextTokenId(zone, token));
 					tokens.add(token);
 					// A token from an .rptok file is already fully configured.
 					configureTokens.add(false);
-				}
-				else if (working instanceof PersistenceUtil.PersistedMap) {
+				} else if (working instanceof PersistenceUtil.PersistedMap) {
 					// jmoskie: it looks like I don't have to actually do anything here, loadMap handled all the assets.
 					// leaving this here in case i realize i'm wrong, or want to add extra handling.
 				}
@@ -609,10 +605,10 @@ public class TransferableHelper extends TransferHandler {
 					// There's no reason to trap the individual exceptions when a single catch suffices.
 					if (log.isEnabledFor(Level.ERROR))
 						log.error("while using TransferableToken.dataFlavor", e); //$NON-NLS-1$
-//				} catch (UnsupportedFlavorException ufe) {
-//					ufe.printStackTrace();
-//				} catch (IOException ioe) {
-//					ioe.printStackTrace();
+					//				} catch (UnsupportedFlavorException ufe) {
+					//					ufe.printStackTrace();
+					//				} catch (IOException ioe) {
+					//					ioe.printStackTrace();
 				}
 			} else if (t.isDataFlavorSupported(GroupTokenTransferData.GROUP_TOKEN_LIST_FLAVOR)) {
 				tokens = getTokens(t);

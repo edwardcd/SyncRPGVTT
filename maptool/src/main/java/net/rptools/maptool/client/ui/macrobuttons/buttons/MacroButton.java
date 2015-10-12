@@ -1,12 +1,12 @@
 /*
- *  This software copyright by various authors including the RPTools.net
- *  development team, and licensed under the LGPL Version 3 or, at your
- *  option, any later version.
+ * This software copyright by various authors including the RPTools.net
+ * development team, and licensed under the LGPL Version 3 or, at your option,
+ * any later version.
  *
- *  Portions of this software were originally covered under the Apache
- *  Software License, Version 1.1 or Version 2.0.
+ * Portions of this software were originally covered under the Apache Software
+ * License, Version 1.1 or Version 2.0.
  *
- *  See the file LICENSE elsewhere in this distribution for license details.
+ * See the file LICENSE elsewhere in this distribution for license details.
  */
 
 package net.rptools.maptool.client.ui.macrobuttons.buttons;
@@ -203,10 +203,10 @@ public class MacroButton extends JButton implements MouseListener {
 			if (getPanelClass().equals("GlobalPanel")) {
 				new MacroButtonPopupMenu(this, panelClass, false).show(this, event.getX(), event.getY());
 			} else if (getPanelClass().equals("CampaignPanel")
-							|| getPanelClass().equals("GenericPanel")
-							|| getPanelClass().equals("SkillsPanel")
-							|| getPanelClass().equals("OffensePanel")
-							|| getPanelClass().equals("DefensePanel")) {
+					|| getPanelClass().equals("GenericPanel")
+					|| getPanelClass().equals("SkillsPanel")
+					|| getPanelClass().equals("OffensePanel")
+					|| getPanelClass().equals("DefensePanel")) {
 				if (MapTool.getPlayer().isGM()) {
 					new MacroButtonPopupMenu(this, panelClass, false).show(this, event.getX(), event.getY());
 				} else {
@@ -322,6 +322,7 @@ public class MacroButton extends JButton implements MouseListener {
 	}
 
 	public static boolean isMacroButtonFile(String filename) {
-		return filename != null && (filename.toLowerCase().endsWith(AppConstants.MACRO_FILE_EXTENSION) || filename.toLowerCase().endsWith(AppConstants.MACRO_FILE_EXTENSION + AppConstants.PHP_FILE_EXTENSION));
+		return filename != null
+				&& (filename.toLowerCase().endsWith(AppConstants.MACRO_FILE_EXTENSION) || filename.toLowerCase().endsWith(AppConstants.MACRO_FILE_EXTENSION + AppConstants.PHP_FILE_EXTENSION));
 	}
 }

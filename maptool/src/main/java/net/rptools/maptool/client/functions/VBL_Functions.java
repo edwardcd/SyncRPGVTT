@@ -73,10 +73,9 @@ public class VBL_Functions extends AbstractFunction {
 			boolean erase = false;
 			Token token = null;
 
-			if(parameters.size() == 2) {
+			if (parameters.size() == 2) {
 				token = getTokenFromParam(resolver, functionName, parameters, 1);
-			}
-			else if (parameters.size() < 1 && parameters.size() > 2) {
+			} else if (parameters.size() < 1 && parameters.size() > 2) {
 				throw new ParserException(I18N.getText("macro.function.general.wrongNumParam", functionName, 1, parameters.size()));
 			}
 
@@ -255,7 +254,7 @@ public class VBL_Functions extends AbstractFunction {
 			if (useFacing)
 				r = -(facing + 90);
 
-			if(token != null) {
+			if (token != null) {
 				Rectangle tokenBounds = token.getBounds(zone);
 
 				rx = token.getX() + (tokenBounds.width / 2);
@@ -400,7 +399,7 @@ public class VBL_Functions extends AbstractFunction {
 			if (useFacing)
 				r = -(facing + 90);
 
-			if(token != null) {
+			if (token != null) {
 				Rectangle tokenBounds = token.getBounds(zone);
 
 				rx = token.getX() + (tokenBounds.width / 2);
@@ -501,7 +500,7 @@ public class VBL_Functions extends AbstractFunction {
 			if (useFacing)
 				r = -(facing + 90);
 
-			if(token != null) {
+			if (token != null) {
 				Rectangle tokenBounds = token.getBounds(zone);
 
 				rx = token.getX() + (tokenBounds.width / 2);
@@ -610,7 +609,7 @@ public class VBL_Functions extends AbstractFunction {
 			if (useFacing)
 				rotation = -(facing + 90);
 
-			if(token != null) {
+			if (token != null) {
 				Rectangle tokenBounds = token.getBounds(zone);
 
 				rx = token.getX() + (tokenBounds.width / 2);
