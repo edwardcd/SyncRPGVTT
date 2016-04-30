@@ -1,4 +1,5 @@
 The SyncRPG VTT, Powered by MapTool
+===================================
 Simply put, SyncRPG makes it easy to play your favorite tabletop roleplaying games (RPGs) with your friends over the internet and helps you keep records of the experience.
 
 SyncRPG is a set of online tools, rule sets, and art assets aimed at facilitating the creation, sharing, and playing of traditional tabletop roleplaying games over the Internet. It is used to help run games efficiently, allows Game Masters (GMs) to share their encounters and non-player characters (NPCs) with each other, and enables players to keep historical records of their characters online—forever!
