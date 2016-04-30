@@ -43,6 +43,7 @@ import net.rptools.maptool.model.drawing.Drawable;
 import net.rptools.maptool.model.drawing.DrawableColorPaint;
 import net.rptools.maptool.model.drawing.DrawablePaint;
 import net.rptools.maptool.model.drawing.DrawableTexturePaint;
+import net.rptools.maptool.model.drawing.DrawablesGroup;
 import net.rptools.maptool.model.drawing.DrawnElement;
 import net.rptools.maptool.model.drawing.Pen;
 import net.rptools.maptool.util.StringUtil;
@@ -658,6 +659,10 @@ public class Zone extends BaseModel {
 		fireModelChangeEvent(new ModelChangeEvent(this, Event.FOG_CHANGED));
 	}
 
+	/* Back out this function
+	 * Possible cause of FOW issues
+	 * See http://forums.rptools.net/viewtopic.php?f=86&t=26469
+	 * 
 	public void clearExposedArea(Set<GUID> tokenSet) {
 		//Jamz: Clear FoW for set tokens only, for use by ExposeVisibleAreaOnlyAction Menu action and exposePCOnlyArea() macro
 		for (GUID tea : tokenSet) {
@@ -665,9 +670,9 @@ public class Zone extends BaseModel {
 			if (meta != null)
 				meta.clearExposedAreaHistory();
 		}
-
+	
 		fireModelChangeEvent(new ModelChangeEvent(this, Event.FOG_CHANGED));
-	}
+	} */
 
 	public void exposeArea(Area area, Token tok) {
 		if (area == null || area.isEmpty()) {
@@ -925,6 +930,25 @@ public class Zone extends BaseModel {
 		fireModelChangeEvent(new ModelChangeEvent(this, Event.DRAWABLE_ADDED, drawnElement));
 	}
 
+	public void addDrawableRear(DrawnElement drawnElement) {
+		// Since the list is drawn in order
+		// items that are drawn first are at the "back"
+		switch (drawnElement.getDrawable().getLayer()) {
+		case OBJECT:
+			((LinkedList<DrawnElement>) objectDrawables).addFirst(drawnElement);
+			break;
+		case BACKGROUND:
+			((LinkedList<DrawnElement>) backgroundDrawables).addFirst(drawnElement);
+			break;
+		case GM:
+			((LinkedList<DrawnElement>) gmDrawables).addFirst(drawnElement);
+			break;
+		default:
+			((LinkedList<DrawnElement>) drawables).addFirst(drawnElement);
+		}
+		fireModelChangeEvent(new ModelChangeEvent(this, Event.DRAWABLE_ADDED, drawnElement));
+	}
+
 	public List<DrawnElement> getDrawnElements() {
 		return getDrawnElements(Zone.Layer.TOKEN);
 	}
@@ -972,6 +996,10 @@ public class Zone extends BaseModel {
 				i.remove();
 				fireModelChangeEvent(new ModelChangeEvent(this, Event.DRAWABLE_REMOVED, drawable));
 				return;
+			}
+			if (drawable.getDrawable() instanceof DrawablesGroup) {
+				DrawablesGroup dg = (DrawablesGroup) drawable.getDrawable();
+				removeDrawable(dg.getDrawableList(), drawableId);
 			}
 		}
 	}
@@ -1150,6 +1178,24 @@ public class Zone extends BaseModel {
 		list.addAll(getGMDrawnElements());
 
 		return list;
+	}
+
+	public DrawnElement getDrawnElement(GUID id) {
+		DrawnElement result = findDrawnElement(getAllDrawnElements(), id);
+		return result;
+	}
+
+	private DrawnElement findDrawnElement(List<DrawnElement> list, GUID id) {
+		for (DrawnElement de : list) {
+			if (de.getDrawable().getId() == id)
+				return de;
+			if (de.getDrawable() instanceof DrawablesGroup) {
+				DrawnElement result = findDrawnElement(((DrawablesGroup) de.getDrawable()).getDrawableList(), id);
+				if (result != null)
+					return result;
+			}
+		}
+		return null;
 	}
 
 	public int getTokenCount() {

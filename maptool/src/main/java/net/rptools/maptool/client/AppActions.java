@@ -524,6 +524,7 @@ public class AppActions {
 			if (name != null) {
 				zone.setName(name);
 				MapTool.serverCommand().renameZone(zone.getId(), name);
+				MapTool.getFrame().setCurrentZoneRenderer(MapTool.getFrame().getCurrentZoneRenderer());
 			}
 		}
 	};
@@ -2787,7 +2788,8 @@ public class AppActions {
 					//					MapTool.serverCommand().setBoard(zone.getId(), zone.getMapAssetId(), zone.getBoardX(), zone.getBoardY());
 					MapTool.serverCommand().removeZone(zone.getId());
 					MapTool.serverCommand().putZone(zone);
-					MapTool.getFrame().getCurrentZoneRenderer().flush();
+					//MapTool.getFrame().getCurrentZoneRenderer().flush();
+					MapTool.getFrame().setCurrentZoneRenderer(MapTool.getFrame().getCurrentZoneRenderer());
 				}
 			});
 		}

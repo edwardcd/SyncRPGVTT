@@ -403,6 +403,30 @@ public class MapTool {
 		return false;
 	}
 
+	public static boolean confirmDrawDelete() {
+		if (!AppPreferences.getDrawWarnWhenDeleted()) {
+			return true;
+		}
+
+		String msg = I18N.getText("msg.confirm.deleteDraw");
+		log.debug(msg);
+		Object[] options = { I18N.getText("msg.title.messageDialog.yes"), I18N.getText("msg.title.messageDialog.no"), I18N.getText("msg.title.messageDialog.dontAskAgain") };
+		String title = I18N.getText("msg.title.messageDialogConfirm");
+		int val = JOptionPane.showOptionDialog(clientFrame, msg, title, JOptionPane.NO_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]);
+
+		// "Yes, don't show again" Button
+		if (val == 2) {
+			showInformation("msg.confirm.deleteDraw.removed");
+			AppPreferences.setDrawWarnWhenDeleted(false);
+		}
+		// Any version of 'Yes'...
+		if (val == JOptionPane.YES_OPTION || val == 2) {
+			return true;
+		}
+		// Assume 'No' response
+		return false;
+	}
+
 	private MapTool() {
 		// Not to be instantiated
 		throw new Error("cannot construct MapTool object!");
@@ -952,6 +976,10 @@ public class MapTool {
 	}
 
 	public static void addZone(Zone zone) {
+		addZone(zone, true);
+	}
+
+	public static void addZone(Zone zone, boolean changeZone) {
 		if (getCampaign().getZones().size() == 1) {
 			// Remove the default map
 			Zone singleZone = getCampaign().getZones().get(0);
@@ -964,7 +992,11 @@ public class MapTool {
 		eventDispatcher.fireEvent(ZoneEvent.Added, getCampaign(), null, zone);
 
 		// Show the new zone
-		clientFrame.setCurrentZoneRenderer(ZoneRendererFactory.newRenderer(zone));
+		if (changeZone)
+			clientFrame.setCurrentZoneRenderer(ZoneRendererFactory.newRenderer(zone));
+		else {
+			getFrame().getZoneRenderers().add(ZoneRendererFactory.newRenderer(zone));
+		}
 	}
 
 	public static Player getPlayer() {

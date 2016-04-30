@@ -53,22 +53,12 @@ ext.yyyymmdd = (new SimpleDateFormat('yyyyMMDD')).format(ext.compileDate);
 
 
 def getVersionName() {
-
-    if (project.hasProperty('buildVersion')) {
-        return buildVersion
-    } else {
-        def repo =  Grgit.open(project.file('.'))
-        def tagName = repo.tag.list()[0].fullName.replace('refs/tags/', '')
-        def tagCommit = repo.tag.list()[0].commit.id
-        def headCommit = repo.head().id
-        def headAbbrvId = repo.head().abbreviatedId
-
-        if (tagCommit == headCommit) {
-            return tagName
-        } else {
-            return tagName + '-' + headAbbrvId
-        }
-    }
+	if (project.hasProperty('buildVersion')) {
+		return buildVersion
+	} else {
+		String vtxtVersionNo = file('build-resources/version.txt').text.trim()
+		return vtxtVersionNo
+	}
 }
 
 
@@ -173,6 +163,7 @@ project(':maptool') {
     dependencies {
         compile 'net.java.abeille:abeille-formsrt:2.0'
         compile 'net.rptools.clientserver:clientserver:1.0.b17'
+        //compile 'net.rptools.clientserver:clientserver:1.4.0.+'
         compile 'org.hibernate:antlr:2.7.5H3'
         compile 'commons-beanutils:commons-beanutils-core:1.8.3'
         compile 'org.ow2.util.bundles:commons-collections-3.2.1:1.0.0'
@@ -199,6 +190,7 @@ project(':maptool') {
         compile 'log4j:log4j:1.2.16'
         compile 'net.rptools.maptool.resource:maptool.resource:1.0.b18'
         compile 'net.rptools.parser:parser:1.1.b24'
+        //compile 'net.rptools.parser:parser:1.4.0.+'
         compile 'ca.odell.renderpack:renderpack:1.2004'
         compile 'net.rptools.rplib:rplib:1.4.0.+'
         compile 'net.tsc.servicediscovery:servicediscovery:1.0.b5'

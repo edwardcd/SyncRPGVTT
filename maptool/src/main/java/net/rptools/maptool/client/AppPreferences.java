@@ -107,6 +107,9 @@ public class AppPreferences {
 	private static final String KEY_TOKENS_WARN_WHEN_DELETED = "tokensWarnWhenDeleted";
 	private static final boolean DEFAULT_TOKENS_WARN_WHEN_DELETED = true;
 
+	private static final String KEY_DRAW_WARN_WHEN_DELETED = "drawWarnWhenDeleted";
+	private static final boolean DEFAULT_DRAW_WARN_WHEN_DELETED = true;
+
 	private static final String KEY_TOKENS_START_SNAP_TO_GRID = "newTokensStartSnapToGrid";
 	private static final boolean DEFAULT_TOKENS_START_SNAP_TO_GRID = true;
 
@@ -388,6 +391,9 @@ public class AppPreferences {
 	private static final String KEY_TYPING_NOTIFICATION_DURATION = "typingNotificationDuration";
 	private static final int DEFAULT_TYPING_NOTIFICATION_DURATION = 5000;
 
+	private static final String KEY_UPNP_DISCOVERY_TIMEOUT = "upnpDiscoveryTimeout";
+	private static final int DEFAULT_UPNP_DISCOVERY_TIMEOUT = 5000;
+
 	public static void setTypingNotificationDuration(int ms) {
 		prefs.putInt(KEY_TYPING_NOTIFICATION_DURATION, ms);
 		MapTool.getFrame().setChatNotifyDuration(ms);
@@ -645,6 +651,14 @@ public class AppPreferences {
 		return prefs.getBoolean(KEY_TOKENS_WARN_WHEN_DELETED, DEFAULT_TOKENS_WARN_WHEN_DELETED);
 	}
 
+	public static void setDrawWarnWhenDeleted(boolean flag) {
+		prefs.putBoolean(KEY_DRAW_WARN_WHEN_DELETED, flag);
+	}
+
+	public static boolean getDrawWarnWhenDeleted() {
+		return prefs.getBoolean(KEY_DRAW_WARN_WHEN_DELETED, DEFAULT_DRAW_WARN_WHEN_DELETED);
+	}
+
 	public static void setTokensStartSnapToGrid(boolean flag) {
 		prefs.putBoolean(KEY_TOKENS_START_SNAP_TO_GRID, flag);
 	}
@@ -727,6 +741,14 @@ public class AppPreferences {
 
 	public static void setMovementMetric(WalkerMetric metric) {
 		prefs.put(KEY_MOVEMENT_METRIC, metric.toString());
+	}
+
+	public static void setUpnpDiscoveryTimeout(int timeout) {
+		prefs.putInt(KEY_UPNP_DISCOVERY_TIMEOUT, timeout);
+	}
+
+	public static int getUpnpDiscoveryTimeout() {
+		return prefs.getInt(KEY_UPNP_DISCOVERY_TIMEOUT, DEFAULT_UPNP_DISCOVERY_TIMEOUT);
 	}
 
 	public static WalkerMetric getMovementMetric() {
