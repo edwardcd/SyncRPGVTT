@@ -316,11 +316,13 @@ public class MapToolFrame extends DefaultDockableHolder implements WindowListene
 
 		String credits = "";
 		String version = "";
+		String syncRPGVersion = "";
 		Image logo = null;
 		try {
 			credits = new String(FileUtil.loadResource(CREDITS_HTML), "UTF-8"); // 2nd param of type Charset is Java6+
 			version = MapTool.getVersion();
-			credits = credits.replace("%VERSION%", version);
+			syncRPGVersion = "BETA";
+			credits = credits.replace("%VERSION%", version).replace("%SYNCRPG_VERSION%", syncRPGVersion);
 			logo = ImageUtil.getImage(MAPTOOL_LOGO_IMAGE);
 		} catch (Exception ioe) {
 			log.error(I18N.getText("msg.error.credits"), ioe);

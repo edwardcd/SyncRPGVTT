@@ -110,7 +110,7 @@ public class MapToolLauncher extends JFrame {
 	private static final String EMPTY = ""; //$NON-NLS-1$
 	private static final String ASSERTIONS_OPTION = "-ea"; //$NON-NLS-1$
 	private static final String DATADIR_OPTION = "-DMAPTOOL_DATADIR="; //$NON-NLS-1$
-	private static final String MAC_TITLE_FIX = "-Xdock:name=MapTool"; // $NON-NLS-1$
+	private static final String MAC_TITLE_FIX = "-Xdock:name=SyncRPG VTT Powered by MapTool"; // $NON-NLS-1$
 	private static final String LOCALE_LANGUAGE_OPTION = "-Duser.language="; //$NON-NLS-1$
 	private static final String LOCALE_COUNTRY_OPTION = "-Duser.country="; //$NON-NLS-1$
 
@@ -454,9 +454,9 @@ public class MapToolLauncher extends JFrame {
 					}
 					logMsg(Level.INFO, f.toString(), null);
 					jbMTJar.setText(fileName.replace(".jar", EMPTY)); //$NON-NLS-1$
-					if (fileName.toLowerCase().startsWith("maptool-")) {
-						// We expect the name matches 'maptool-1.3.b89.jar'
-						mapToolVersion = " " + fileName.substring(8, 11);
+					if (fileName.toLowerCase().startsWith("syncrpg-vtt-")) {
+						// We expect the name matches 'syncrpg-vtt-1.3.b89.jar'
+						mapToolVersion = " " + fileName.substring(12, 15);
 					} else {
 						logMsg(Level.SEVERE, "Cannot determine MapTool version number from JAR filename: {0}", "msg.info.noMapToolVersion", fileName); //$NON-NLS-1$
 						mapToolVersion = EMPTY;
@@ -1187,7 +1187,7 @@ public class MapToolLauncher extends JFrame {
 					// filename in all lowercase, but what if the user decides to rename it to make
 					// it look good?  (I've done that myself sometimes, in rare cases.)
 					String n = name.toLowerCase();
-					return n.startsWith("maptool-") && n.endsWith(".jar");
+					return n.startsWith("syncrpg-vtt-") && n.endsWith(".jar");
 				}
 			});
 			if (names.length == 1)
@@ -1196,9 +1196,9 @@ public class MapToolLauncher extends JFrame {
 		if (mapToolJarName != null) {
 			logMsg(Level.INFO, "EXECUTABLE={0}", null, mapToolJarName);
 			jbMTJarText = mapToolJarName.replace(".jar", EMPTY); //$NON-NLS-1$
-			if (mapToolJarName.toLowerCase().startsWith("maptool-")) { //$NON-NLS-1$
-				// We expect the name matches 'maptool-1.3.b89.jar'
-				mapToolVersion = " " + mapToolJarName.substring(8, 11); //$NON-NLS-1$
+			if (mapToolJarName.toLowerCase().startsWith("syncrpg-vtt-")) { //$NON-NLS-1$
+				// We expect the name matches 'syncrpg-vtt-1.3.b89.jar'
+				mapToolVersion = " " + mapToolJarName.substring(12, 15); //$NON-NLS-1$
 			} else {
 				logMsg(Level.WARNING, "Cannot determine MapTool version number from JAR filename: {0}", null, f); //$NON-NLS-1$
 				mapToolVersion = EMPTY;

@@ -155,6 +155,9 @@ project(':launcher') {
 project(':maptool') {
     apply plugin: 'de.gliderpilot.jnlp'
 
+    applicationName='SyncRPG VTT Powered by MapTool'
+    archivesBaseName='SyncRPG-VTT'
+
     mainClassName='net.rptools.maptool.client.LaunchInstructions'
 
 
@@ -247,7 +250,7 @@ project(':maptool') {
     jnlp {
         withXml {
             information {
-                title 'RPTools MapTool'
+                title 'SyncRPG VTT Powered by RPTools MapTool'
                 vendor project.group ?: project.name
             }
             security {
@@ -289,7 +292,7 @@ copySubProjectFiles.mustRunAfter(':maptool:release', ':launcher:release')
 task zipRelease(dependsOn: copySubProjectFiles, type: Zip) {
     from 'build/tmp/dist/'
     into  ''
-    baseName = 'maptool-' + getVersionName()
+    baseName = 'SyncRPG-VTT-' + getVersionName()
     destinationDir new File(projectDir, 'build')
     outputs.upToDateWhen {
         false
@@ -310,8 +313,8 @@ task osxApp() << {
         )
         bundleapp(
             outputdirectory: 'build/tmp/',
-            name: 'MapTool-' + buildVersion,
-            displayname: 'MapTool-' + buildVersion,
+            name: 'SyncRPG-VTT-' + buildVersion,
+            displayname: 'SyncRPG-VTT-' + buildVersion,
             identifier: 'net.rptools.maptool',
             mainclassname: mainClassName,
             signature: 'RPTM',
@@ -334,9 +337,9 @@ task osxApp() << {
 osxApp.mustRunAfter(copySubProjectFiles)
 
 task zipOSXApp(dependsOn: osxApp, type: Zip) {
-    from 'build/tmp/MapTool-' + getVersionName() + '.app'
-    into  'MapTool-' + getVersionName() + '.app'
-    baseName = 'maptool-' + getVersionName() + '-osx'
+    from 'build/tmp/SyncRPG-VTT-' + getVersionName() + '.app'
+    into  'SyncRPG-VTT-' + getVersionName() + '.app'
+    baseName = 'SyncRPG-VTT-' + getVersionName() + '-osx'
     destinationDir new File(projectDir, 'build')
     outputs.upToDateWhen {
         false
