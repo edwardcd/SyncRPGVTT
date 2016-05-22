@@ -120,7 +120,7 @@ public class AppPreferences {
 	private static final boolean DEFAULT_OBJECTS_START_FREESIZE = true;
 
 	private static final String KEY_BACKGROUNDS_START_SNAP_TO_GRID = "newBackgroundsStartSnapToGrid";
-	private static final boolean DEFAULT_BACKGROUNDS_START_SNAP_TO_GRID = false;
+	private static final boolean DEFAULT_BACKGROUNDS_START_SNAP_TO_GRID = true;
 
 	private static final String KEY_BACKGROUNDS_START_FREESIZE = "newBackgroundsStartFreesize";
 	private static final boolean DEFAULT_BACKGROUNDS_START_FREESIZE = true;
@@ -324,7 +324,7 @@ public class AppPreferences {
 	private static final Color DEFAULT_CHAT_COLOR = Color.black;
 
 	private static final String KEY_PLAY_SYSTEM_SOUNDS = "playSystemSounds";
-	private static final boolean DEFAULT_PLAY_SYSTEM_SOUNDS = true;
+	private static final boolean DEFAULT_PLAY_SYSTEM_SOUNDS = false;
 
 	public static void setHaloLineWidth(int size) {
 		prefs.putInt(KEY_HALO_LINE_WIDTH, size);
@@ -347,7 +347,7 @@ public class AppPreferences {
 	private static final int DEFAULT_TOOLTIP_DISMISS_DELAY = 30000;
 
 	private static final String KEY_TOOLTIP_FOR_INLINE_ROLLS = "toolTipInlineRolls";
-	private static final boolean DEFAULT_TOOLTIP_FOR_INLINE_ROLLS = false;
+	private static final boolean DEFAULT_TOOLTIP_FOR_INLINE_ROLLS = true;
 
 	private static final String KEY_SUPPRESS_TOOLTIPS_FOR_MACROLINKS = "suppressToolTipsMacroLinks";
 	private static final boolean DEFAULT_SUPPRESS_TOOLTIPS_FOR_MACROLINKS = false;

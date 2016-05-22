@@ -83,7 +83,7 @@ public class StartServerDialogPreferences {
 	}
 
 	public boolean getUseStrictTokenOwnership() {
-		return prefs.getBoolean(KEY_STRICT_TOKEN_OWNERSHIP, false);
+		return prefs.getBoolean(KEY_STRICT_TOKEN_OWNERSHIP, true);
 	}
 
 	public void setUseStrictTokenOwnership(boolean use) {
@@ -128,7 +128,7 @@ public class StartServerDialogPreferences {
 	}
 
 	public boolean getPlayersCanRevealVision() {
-		return prefs.getBoolean(KEY_PLAYERS_CAN_REVEAL_VISION, false);
+		return prefs.getBoolean(KEY_PLAYERS_CAN_REVEAL_VISION, true);
 	}
 
 	public void setUseIndividualViews(boolean flag) {
@@ -152,7 +152,7 @@ public class StartServerDialogPreferences {
 	}
 
 	public boolean getPlayersReceiveCampaignMacros() {
-		return prefs.getBoolean(KEY_PLAYERS_RECEIVE_CAMPAIGN_MACROS, false);
+		return prefs.getBoolean(KEY_PLAYERS_RECEIVE_CAMPAIGN_MACROS, true);
 	}
 
 	public boolean getUseToolTipsForUnformattedRolls() {
@@ -187,7 +187,7 @@ public class StartServerDialogPreferences {
 	}
 
 	public boolean isAutoRevealOnMovement() {
-		return prefs.getBoolean(KEY_AUTO_REVEAL_ON_MOVE, false);
+		return prefs.getBoolean(KEY_AUTO_REVEAL_ON_MOVE, true);
 	}
 
 	public void setAutoRevealOnMovement(boolean flag) {
